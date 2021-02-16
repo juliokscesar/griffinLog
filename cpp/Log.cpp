@@ -6,7 +6,7 @@
 #include <string>
 #include <sstream>
 
-namespace Log
+namespace jkscLog
 {
     std::ofstream logFile;
 

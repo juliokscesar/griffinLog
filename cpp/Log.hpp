@@ -5,7 +5,7 @@
 #include <fstream>
 #include <string>
 
-namespace Log
+namespace jkscLog
 {
     bool Init();
     bool Init(const std::string& fileName);
