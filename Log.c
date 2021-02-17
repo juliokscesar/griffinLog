@@ -12,12 +12,36 @@ int LogInit()
 
 void LogWrite(const char* logInfo)
 {
+    char* dateTime = GetCurrentDateTime();
+
     fprintf(logFile, "[%s] %s", GetCurrentDateTime(), logInfo);
+
+    free(dateTime);
 }
 
 void LogWriteLine(const char* logInfo)
 {
-    fprintf(logFile, "[%s] %s\n", GetCurrentDateTime(), logInfo);
+    char* dateTime = GetCurrentDateTime();
+
+    fprintf(logFile, "[%s] %s\n", dateTime, logInfo);
+
+    free(dateTime);
+}
+
+void LogWriteF(const char* logInfoFormat, ...)
+{
+    va_list args;
+    va_start(args, logInfoFormat);
+
+    const int logSize = (int)strlen(logInfoFormat) + 255;
+    char* log = malloc(logSize);
+
+    vsprintf(log, logInfoFormat, args);
+
+    LogWrite(log);
+
+    free(log);
+    va_end(args);
 }
 
 char* GetCurrentDateTime()

@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdarg.h>
 #include <string.h>
 #include <time.h>
 
@@ -12,6 +13,7 @@ int LogInit();
 
 void LogWrite(const char* logInfo);
 void LogWriteLine(const char* logInfo);
+void LogWriteF(const char* logInfoFormat, ...);
 char* GetCurrentDateTime();
 int LogFinish();
 

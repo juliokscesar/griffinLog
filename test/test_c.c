@@ -17,6 +17,9 @@ int main()
     // Write line with no \n at the end
     LogWrite("testing c log");
 
+    // Write a formatted string to the file (like fprintf)
+    LogWriteF("testing c log %s", "with formatted strings\n");
+
     LogFinish();
     return 0;
 }
