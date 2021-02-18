@@ -36,6 +36,22 @@ namespace jkscLog
         logFile << "[" << GetDateTimeNow() << "] " << logInfo;
     }
 
+    void WriteFormatted(const std::string& formatLog, ...)
+    {
+        va_list args;
+        va_start(args, formatLog);
+
+        const int logSize = (int)formatLog.length() + 256;
+        char* log = new char[logSize];
+
+        vsprintf(log, formatLog.c_str(), args);
+
+        Write(log);
+
+        delete[] log;
+        va_end(args);
+    }
+
     bool Finish()
     {
         if (logFile.is_open())

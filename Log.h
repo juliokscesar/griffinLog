@@ -13,7 +13,7 @@ int LogInit();
 
 void LogWrite(const char* logInfo);
 void LogWriteLine(const char* logInfo);
-void LogWriteF(const char* logInfoFormat, ...);
+void LogWriteF(const char* formatLog, ...);
 int LogFinish();
 
 char* GetCurrentDateTime();

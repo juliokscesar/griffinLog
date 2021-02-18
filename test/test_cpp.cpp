@@ -22,6 +22,9 @@ int main()
 
     // Write with \n at the end
     jkscLog::WriteLine(name);
+    
+    // Write a formatted string
+    jkscLog::WriteFormatted("Hello %s this is a formatted string from %d", "you", 2021);
 
     jkscLog::Finish();
     return 0;

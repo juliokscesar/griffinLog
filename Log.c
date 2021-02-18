@@ -28,15 +28,15 @@ void LogWriteLine(const char* logInfo)
     free(dateTime);
 }
 
-void LogWriteF(const char* logInfoFormat, ...)
+void LogWriteF(const char* formatLog, ...)
 {
     va_list args;
-    va_start(args, logInfoFormat);
+    va_start(args, formatLog);
 
-    const int logSize = (int)strlen(logInfoFormat) + 256;
+    const int logSize = (int)strlen(formatLog) + 256;
     char* log = malloc(logSize);
 
-    vsprintf(log, logInfoFormat, args);
+    vsprintf(log, formatLog, args);
 
     LogWrite(log);
 
