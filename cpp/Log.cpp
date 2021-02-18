@@ -13,8 +13,8 @@ namespace jkscLog
     bool Init()
     {
         if (!logFile.is_open())
-            logFile.open("JulioMod_Log.log");
-
+            logFile.open("logfile.log");
+        
         return logFile.is_open();
     }
 
