@@ -33,7 +33,7 @@ void LogWriteF(const char* logInfoFormat, ...)
     va_list args;
     va_start(args, logInfoFormat);
 
-    const int logSize = (int)strlen(logInfoFormat) + 255;
+    const int logSize = (int)strlen(logInfoFormat) + 256;
     char* log = malloc(logSize);
 
     vsprintf(log, logInfoFormat, args);
