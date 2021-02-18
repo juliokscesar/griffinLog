@@ -31,7 +31,11 @@ gcc test_c.c ../Log.h
 
 int main()
 {
-    // Initiate log
+    // Initiate log with custom name
+    // if (!LogInitCustom("testlog.log"))
+        // return 1;
+
+    // Initiate log with default name (logfile.log)
     if (!LogInit())
         return 1;
 

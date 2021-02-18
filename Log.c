@@ -35,6 +35,15 @@ int LogInit()
     return !(logFile == NULL);
 }
 
+int LogInitCustom(const char* fileName)
+{
+    if (!logFile)
+        logFile = fopen(fileName, "w");
+
+    LogWriteLine("Log Initiated");
+    return !(logFile == NULL);
+}
+
 void LogWrite(const char* logInfo)
 {
     char* dateTime = GetCurrentDateTime();

@@ -32,9 +32,7 @@ SOFTWARE.
 #include <time.h>
 
 int LogInit();
-
-// TODO: int LogInit(const char* fileName); -- implement
-
+int LogInitCustom(const char* fileName);
 void LogWrite(const char* logInfo);
 void LogWriteLine(const char* logInfo);
 void LogWriteF(const char* formatLog, ...);
