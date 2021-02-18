@@ -62,7 +62,7 @@ namespace jkscLog
         logFile << "[" << GetDateTimeNow() << "] " << logInfo;
     }
 
-    void WriteFormatted(const std::string& formatLog, ...)
+    void WriteF(const std::string& formatLog, ...)
     {
         va_list args;
         va_start(args, formatLog);

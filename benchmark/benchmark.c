@@ -27,7 +27,7 @@ Compile With:
 g++ -o benchmark benchmark.cpp ../cpp/Log.cpp
 */
 
-#include <iostream>
+#include <stdio.h>
 
 #ifdef _WIN32
 
@@ -40,7 +40,7 @@ g++ -o benchmark benchmark.cpp ../cpp/Log.cpp
 
 #endif // _WIN32
 
-#include "../cpp/Log.hpp"
+#include "../Log.h"
 
 
 double get_time()
@@ -64,18 +64,18 @@ int main()
     double start = get_time();
     #endif // _WIN32
 
-    jkscLog::Init("benchmark_log_CPP.log");
+    LogInitCustom("benchmarking_log_C.log");
 
-    jkscLog::Write("First message\n");
-    jkscLog::WriteLine("Seconds Message");
-    jkscLog::WriteF("%s message (%d)\n", "Third", 3);
+    LogWrite("First message\n");
+    LogWriteLine("Seconds Message");
+    LogWriteF("%s message (%d)\n", "Third", 3);
 
-    jkscLog::Finish();
+    LogFinish();
 
     #ifdef _WIN32
     double end = get_time();
     #endif // _WIN32
 
-    std::cout << "Duration = " << (end - start) * 1000 << " milliseconds \n";
+    printf("Duration = %fms\n", (end - start) * 1000);
     return 0;
 }

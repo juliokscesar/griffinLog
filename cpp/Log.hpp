@@ -38,7 +38,7 @@ namespace jkscLog
     bool Init(const std::string& fileName);
     void WriteLine(const std::string& message);
     void Write(const std::string& message);
-    void WriteFormatted(const std::string& formatLog, ...);
+    void WriteF(const std::string& formatLog, ...);
     bool Finish();
 
     const std::string GetDateTimeNow();
