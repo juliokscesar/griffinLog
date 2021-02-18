@@ -49,22 +49,22 @@ int main()
 int main()
 {
     // Initiate with default name
-    // Log::Init();
+    // jkscLog::Init();
 
     // Initiate with custom name
-    Log::Init("test_log.log");
+    jkscLog::Init("test_log.log");
 
     std::string name;
     std::cout << "What is your name?\n";
     std::cin >> name;
 
     // Write with no \n at the end
-    Log::Write("Hello, ");
+    jkscLog::Write("Hello, ");
 
     // Write with \n at the end
-    Log::WriteLine(name);
+    jkscLog::WriteLine(name);
 
-    Log::Finish();
+    jkscLog::Finish();
     return 0;
 }
 ```
