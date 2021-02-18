@@ -14,7 +14,7 @@ void LogWrite(const char* logInfo)
 {
     char* dateTime = GetCurrentDateTime();
 
-    fprintf(logFile, "[%s] %s", GetCurrentDateTime(), logInfo);
+    fprintf(logFile, "[%s] %s", dateTime, logInfo);
 
     free(dateTime);
 }
