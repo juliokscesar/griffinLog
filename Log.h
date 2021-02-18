@@ -14,7 +14,8 @@ int LogInit();
 void LogWrite(const char* logInfo);
 void LogWriteLine(const char* logInfo);
 void LogWriteF(const char* logInfoFormat, ...);
-char* GetCurrentDateTime();
 int LogFinish();
+
+char* GetCurrentDateTime();
 
 #endif // LOG_H

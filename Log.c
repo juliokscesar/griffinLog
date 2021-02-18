@@ -44,6 +44,14 @@ void LogWriteF(const char* logInfoFormat, ...)
     va_end(args);
 }
 
+int LogFinish()
+{
+    if (logFile)
+        fclose(logFile);
+
+    return (logFile == NULL);
+}
+
 char* GetCurrentDateTime()
 {
     time_t t = time(0);
@@ -54,12 +62,4 @@ char* GetCurrentDateTime()
     sprintf(timeNow, "%d-%d-%d;%dh%dm%ds", now->tm_year + 1900, now->tm_mon + 1, now->tm_mday, now->tm_hour, now->tm_min, now->tm_sec);
 
     return timeNow;
-}
-
-int LogFinish()
-{
-    if (logFile)
-        fclose(logFile);
-
-    return (logFile == NULL);
 }
