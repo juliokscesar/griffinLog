@@ -14,7 +14,8 @@ namespace jkscLog
     {
         if (!logFile.is_open())
             logFile.open("logfile.log");
-        
+
+        jkscLog::WriteLine("Log Initiated");
         return logFile.is_open();
     }
 
@@ -23,6 +24,7 @@ namespace jkscLog
         if (!logFile.is_open())
             logFile.open(fileName);
         
+        jkscLog::WriteLine("Log Initiated");
         return logFile.is_open();
     }
 
@@ -54,6 +56,8 @@ namespace jkscLog
 
     bool Finish()
     {
+        jkscLog::WriteLine("Log Finished");
+        
         if (logFile.is_open())
             logFile.close();
 

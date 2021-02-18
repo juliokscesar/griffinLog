@@ -6,6 +6,7 @@
 #include <string>
 #include <cstdarg>
 #include <cstdio>
+#include <exception>
 
 namespace jkscLog
 {

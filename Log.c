@@ -7,6 +7,7 @@ int LogInit()
     if (!logFile)
         logFile = fopen("logfile.log", "w");
 
+    LogWriteLine("Log Initiated");
     return !(logFile == NULL);
 }
 
@@ -46,6 +47,8 @@ void LogWriteF(const char* formatLog, ...)
 
 int LogFinish()
 {
+    LogWriteLine("Log Finished");
+    
     if (logFile)
         fclose(logFile);
 

@@ -18,13 +18,13 @@ int main()
     std::cin >> name;
 
     // Write with no \n at the end
-    jkscLog::Write("Hello, ");
+    jkscLog::Write("Hello\n");
 
     // Write with \n at the end
-    jkscLog::WriteLine(name);
+    jkscLog::WriteLine("Hello " + name);
     
     // Write a formatted string
-    jkscLog::WriteFormatted("Hello %s this is a formatted string from %d", "you", 2021);
+    jkscLog::WriteFormatted("Hello %s this is a formatted string from %d\n", "you", 2021);
 
     jkscLog::Finish();
     return 0;
