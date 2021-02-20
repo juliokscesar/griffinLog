@@ -18,7 +18,7 @@ Clone the repository with `git clone https://github.com/juliokscesar/jkscLogLib.
 - Log.cpp
 
 ## Building
-Just `#include "Log.h"` (C) or `#include "Log.hpp"` (C++) in your code and add Log.c (C) or Log.cpp (C++) to compile with your project. C++ files will separate the functions in a namespace and allow you to choose the base file name (currently working in setting custom file name in C).
+Just `#include "Log.h"` (C) or `#include "Log.hpp"` (C++) in your code and add Log.c (C) or Log.cpp (C++) to compile with your project. C++ files will separate the functions in a namespace.
 
 ## Example Code
 ### C
@@ -27,7 +27,11 @@ Just `#include "Log.h"` (C) or `#include "Log.hpp"` (C++) in your code and add L
 
 int main()
 {
-    // Initiate log
+    // Initiate log with custom name
+    // if (!LogInitCustom("test_log.log"))
+        // return 1;
+
+    // Initiate log with default name (logfile.log)
     if (!LogInit())
         return 1;
 
@@ -35,7 +39,10 @@ int main()
     LogWriteLine("testing c log line");
 
     // Write line with no \n at the end
-    LogWrite("testing c log");
+    LogWrite("testing c log\n");
+
+    // Write a formatted string to the file (like fprintf)
+    LogWriteF("testing c log %s", "with formatted strings\n");
 
     LogFinish();
     return 0;
