@@ -60,9 +60,7 @@ double get_time()
 
 int main()
 {
-    #ifdef _WIN32
     double start = get_time();
-    #endif // _WIN32
 
     LogInitCustom("benchmarking_log_C.log");
 
@@ -72,9 +70,7 @@ int main()
 
     LogFinish();
 
-    #ifdef _WIN32
     double end = get_time();
-    #endif // _WIN32
 
     printf("Duration = %fms\n", (end - start) * 1000);
     return 0;

@@ -48,7 +48,7 @@ int main()
     jkscLog::WriteLine("Hello " + name);
     
     // Write a formatted string
-    jkscLog::WriteFormatted("Hello %s this is a formatted string from %d\n", "you", 2021);
+    jkscLog::WriteF("Hello %s this is a formatted string from %d\n", "you", 2021);
 
     jkscLog::Finish();
     return 0;

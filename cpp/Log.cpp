@@ -32,7 +32,7 @@ SOFTWARE.
 
 namespace jkscLog
 {
-    std::ofstream logFile;
+    static std::ofstream logFile;
 
     bool Init()
     {

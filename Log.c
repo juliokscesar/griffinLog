@@ -24,7 +24,7 @@ SOFTWARE.
 
 #include "Log.h"
 
-FILE* logFile;
+static FILE* logFile;
 
 int LogInit()
 {

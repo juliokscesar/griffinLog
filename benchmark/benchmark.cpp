@@ -60,9 +60,7 @@ double get_time()
 
 int main()
 {
-    #ifdef _WIN32
     double start = get_time();
-    #endif // _WIN32
 
     jkscLog::Init("benchmark_log_CPP.log");
 
@@ -72,10 +70,8 @@ int main()
 
     jkscLog::Finish();
 
-    #ifdef _WIN32
     double end = get_time();
-    #endif // _WIN32
-
+    
     std::cout << "Duration = " << (end - start) * 1000 << " milliseconds \n";
     return 0;
 }
