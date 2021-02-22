@@ -67,14 +67,17 @@ void LogWriteF(const char* formatLog, ...)
     va_list args;
     va_start(args, formatLog);
 
-    const int logSize = (int)strlen(formatLog) + 256;
-    char* log = malloc(logSize);
+    // const int logSize = (int)strlen(formatLog) + 256;
+    // char* log = malloc(logSize);
 
-    vsprintf(log, formatLog, args);
+    // vsprintf(log, formatLog, args);
 
-    LogWrite(log);
+    // LogWrite(log);
 
-    free(log);
+    // free(log);
+
+    vfprintf(logFile, formatLog, args);
+
     va_end(args);
 }
 
