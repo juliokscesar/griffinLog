@@ -2,7 +2,7 @@
 jksc Logging Lib is a simple logging library just to include the basics of logging info to a file, what you could simply do with no library, but jksc helps by having no need to write every single time.
 
 ## Attention
-jsksc Logging Lib literally only includes the basics - Init, Write and Finish (and a function to get the datetime).
+jsksc Logging Lib literally only includes the basics - Initiating, Writing and Finishing (and a function to get the datetime).
 
 ## Getting Started
 To use the jksc Logging Lib, you only need to clone the repository or download the needed files for your programming language. **THIS IS NOT AN ADVANCED LIBRARY, ONLY SOMETHING I WROTE TO USE ON PERSONAL PROJECTS**.
@@ -18,7 +18,7 @@ Clone the repository with `git clone https://github.com/juliokscesar/jkscLogLib.
 - Log.cpp
 
 ## Building
-Just `#include "Log.h"` (C) or `#include "Log.hpp"` (C++) in your code and add Log.c (C) or Log.cpp (C++) to compile with your project. C++ files will separate the functions in a namespace.
+Just `#include "Log.h"` (C) or `#include "Log.hpp"` (C++) in your code and add Log.c (C) or Log.cpp (C++) to compile with your project. C++ files includes the log as a class, with automatic optional init on jkscLog constructor and automatic finish on its destructor.
 
 ## Example Code
 ### C
@@ -55,23 +55,32 @@ int main()
 
 int main()
 {
-    // Initiate with default name
-    // jkscLog::Init();
+    // Create new logger
+    jkscLog logger;
+
+    // Create new logger already initializing it with custom name
+    // jkscLog logger("log_name.log");
+
+    // Initiate with default name (jkscLogFile.log)
+    // logger.Init();
 
     // Initiate with custom name
-    jkscLog::Init("test_log.log");
-
-    std::string name;
-    std::cout << "What is your name?\n";
-    std::cin >> name;
+    if (!logger.Init("logfile_name.log"))
+        return 1;
 
     // Write with no \n at the end
-    jkscLog::Write("Hello, ");
+    logger.Write("Hello testing write\n");
 
     // Write with \n at the end
-    jkscLog::WriteLine(name);
+    logger.WriteLine("Now testing with breakline at the end");
+    
+    // Write a formatted string
+    logger.WriteF("Hello %s this is a formatted string from %d\n", "you", 2021);
 
-    jkscLog::Finish();
+    // Call logger.Finish() method to close it
+    logger.Finish();
+    // It is called on the object destructor, so it is optional
+
     return 0;
 }
 ```

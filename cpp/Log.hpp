@@ -32,16 +32,30 @@ SOFTWARE.
 #include <cstdio>
 #include <exception>
 
-namespace jkscLog
+class jkscLog
 {
+public:
+    jkscLog();
+    jkscLog(const std::string& fileName);
+
     bool Init();
     bool Init(const std::string& fileName);
-    void WriteLine(const std::string& message);
-    void Write(const std::string& message);
-    void WriteF(const std::string& formatLog, ...);
+
+    void Write(const std::string& logInfo);
+    void WriteLine(const std::string& logInfo);
+    void WriteF(const std::string& formatLogInfo, ...);
+
     bool Finish();
 
+    ~jkscLog()
+    {
+        this->Finish();
+    }
+
+private:
+    std::ofstream m_logFile;
+
     const std::string GetDateTimeNow();
-}
+};
 
 #endif // LOG_H

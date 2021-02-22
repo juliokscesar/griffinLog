@@ -30,74 +30,76 @@ SOFTWARE.
 #include <string>
 #include <sstream>
 
-namespace jkscLog
+jkscLog::jkscLog()
 {
-    static std::ofstream logFile;
+    std::cout << "Logger Initiated\n";
+}
 
-    bool Init()
-    {
-        if (!logFile.is_open())
-            logFile.open("logfile.log");
+jkscLog::jkscLog(const std::string& fileName)
+{
+    std::cout << "Logger Initiated\n";
+    Init(fileName);
+}
 
-        jkscLog::WriteLine("Log Initiated");
-        return logFile.is_open();
-    }
+bool jkscLog::Init()
+{
+    if (!m_logFile.is_open())
+        m_logFile.open("jkscLogFile.log");
+    
+    return m_logFile.is_open();
+}
 
-    bool Init(const std::string& fileName)
-    {
-        if (!logFile.is_open())
-            logFile.open(fileName);
-        
-        jkscLog::WriteLine("Log Initiated");
-        return logFile.is_open();
-    }
+bool jkscLog::Init(const std::string& fileName)
+{
+    if (!m_logFile.is_open())
+        m_logFile.open(fileName);
 
-    void WriteLine(const std::string& logInfo)
-    {
-        logFile << "[" << GetDateTimeNow() << "] " << logInfo << "\n";
-    }
+    return m_logFile.is_open();
+}
 
-    void Write(const std::string& logInfo)
-    {
-        logFile << "[" << GetDateTimeNow() << "] " << logInfo;
-    }
+void jkscLog::Write(const std::string& logInfo)
+{
+    m_logFile << "[" << GetDateTimeNow() << "] " << logInfo;
+}
 
-    void WriteF(const std::string& formatLog, ...)
-    {
-        va_list args;
-        va_start(args, formatLog);
+void jkscLog::WriteLine(const std::string& logInfo)
+{
+    Write(logInfo + "\n");
+}
 
-        const int logSize = (int)formatLog.length() + 256;
-        char* log = new char[logSize];
+void jkscLog::WriteF(const std::string& formatLogInfo, ...)
+{
+    va_list args;
+    va_start(args, formatLogInfo);
 
-        vsprintf(log, formatLog.c_str(), args);
+    const int logSize = (int)formatLogInfo.length() + 256;
+    char *log = new char[logSize];
 
-        Write(log);
+    vsprintf(log, formatLogInfo.c_str(), args);
 
-        delete[] log;
-        va_end(args);
-    }
+    Write(log);
 
-    bool Finish()
-    {
-        jkscLog::WriteLine("Log Finished");
-        
-        if (logFile.is_open())
-            logFile.close();
+    delete[] log;
+    va_end(args);
+}
 
-        return !logFile.is_open();
-    }
+bool jkscLog::Finish()
+{
+    if (m_logFile.is_open())
+        m_logFile.close();
 
-    const std::string GetDateTimeNow()
-    {
-        std::time_t t = std::time(0);
-        std::tm* now = std::localtime(&t);
-        std::stringstream stream;
-        stream << std::put_time(now, "%Y-%m-%d;%H:%M:%S%p");
+    return !m_logFile.is_open();
+}
 
-        std::string timeNow;
-        stream >> timeNow;
+const std::string jkscLog::GetDateTimeNow()
+{
+    std::time_t t = std::time(0);
+    std::tm* now = std::localtime(&t);
+    std::stringstream stream;
+    stream << std::put_time(now, "%Y-%m-%d;%H:%M:%S%p");
 
-        return timeNow;
-    }
+    std::string timeNow;
+    stream >> timeNow;
+
+    return timeNow;
 }
