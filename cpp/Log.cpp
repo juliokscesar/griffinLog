@@ -59,16 +59,25 @@ bool jkscLog::Init(const std::string& fileName)
 
 void jkscLog::Write(const std::string& logInfo)
 {
+    if (!m_logFile.is_open())
+        throw "Log was not initiated";
+
     m_logFile << "[" << GetDateTimeNow() << "] " << logInfo;
 }
 
 void jkscLog::WriteLine(const std::string& logInfo)
 {
+    if (!m_logFile.is_open())
+        throw "Log file was not initiated";
+    
     Write(logInfo + "\n");
 }
 
 void jkscLog::WriteF(const std::string& formatLogInfo, ...)
 {
+    if (!m_logFile.is_open())
+        throw "Log file was not initiated";
+    
     va_list args;
     va_start(args, formatLogInfo);
 
