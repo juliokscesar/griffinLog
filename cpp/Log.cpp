@@ -38,7 +38,6 @@ jkscLog::jkscLog()
 
 jkscLog::jkscLog(const std::string& fileName)
 {
-    std::cout << "Logger Initiated\n";
     Init(fileName);
 }
 
@@ -47,6 +46,8 @@ bool jkscLog::Init()
     if (!m_logFile.is_open())
         m_logFile.open("jkscLogFile.log");
     
+    WriteLine("Log Initiated");
+
     return m_logFile.is_open();
 }
 
@@ -54,6 +55,8 @@ bool jkscLog::Init(const std::string& fileName)
 {
     if (!m_logFile.is_open())
         m_logFile.open(fileName);
+
+    WriteLine("Log Initiated");
 
     return m_logFile.is_open();
 }
@@ -95,6 +98,8 @@ void jkscLog::WriteF(const std::string& formatLogInfo, ...)
 
 bool jkscLog::Finish()
 {
+    WriteLine("Log Finished");
+
     if (m_logFile.is_open())
         m_logFile.close();
 
