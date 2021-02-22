@@ -31,9 +31,11 @@ SOFTWARE.
 #include <sstream>
 #include <stdexcept>
 
+#define ASSERT_LOG_INIT() if (!m_logFile.is_open()) throw std::runtime_error(std::string(__FILE__) + ":" + std::to_string(__LINE__) + " LOG WAS NOT INITIATED")
+
 jkscLog::jkscLog()
 {
-    std::cout << "Logger Initiated\n";
+    std::cout << "Default constructor of jkscLog called\n";
 }
 
 jkscLog::jkscLog(const std::string& fileName)
@@ -63,25 +65,20 @@ bool jkscLog::Init(const std::string& fileName)
 
 void jkscLog::Write(const std::string& logInfo)
 {
-    if (!m_logFile.is_open())
-        throw std::runtime_error("Log was not initiated");
-
+    ASSERT_LOG_INIT();
     m_logFile << "[" << GetDateTimeNow() << "] " << logInfo;
 }
 
 void jkscLog::WriteLine(const std::string& logInfo)
 {
-    if (!m_logFile.is_open())
-        throw std::runtime_error("Log was not initiated");
-    
+    ASSERT_LOG_INIT();
     Write(logInfo + "\n");
 }
 
 void jkscLog::WriteF(const std::string& formatLogInfo, ...)
 {
-    if (!m_logFile.is_open())
-        throw std::runtime_error("Log was not initiated");
-    
+    ASSERT_LOG_INIT();
+
     va_list args;
     va_start(args, formatLogInfo);
 
@@ -98,10 +95,11 @@ void jkscLog::WriteF(const std::string& formatLogInfo, ...)
 
 bool jkscLog::Finish()
 {
-    WriteLine("Log Finished");
-
     if (m_logFile.is_open())
+    {
+        WriteLine("Log Finished");
         m_logFile.close();
+    }
 
     return !m_logFile.is_open();
 }
