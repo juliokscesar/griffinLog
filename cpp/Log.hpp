@@ -32,6 +32,14 @@ SOFTWARE.
 #include <cstdio>
 #include <exception>
 
+enum class LogMode
+{
+    Info     = 0,
+    Warning  = 1,
+    Error    = 2,
+    Critical = 3
+};
+
 class jkscLog
 {
 public:
@@ -54,7 +62,7 @@ public:
 
 private:
     std::ofstream m_logFile;
-
+    std::string m_logFileName;
     const std::string GetDateTimeNow();
 };
 

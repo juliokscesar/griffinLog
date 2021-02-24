@@ -49,6 +49,7 @@ void LogWrite(const char* logInfo)
     char* dateTime = GetCurrentDateTime();
 
     fprintf(logFile, "[%s] %s", dateTime, logInfo);
+    printf("[%s] %s", dateTime, logInfo);
 
     free(dateTime);
 }
@@ -58,6 +59,7 @@ void LogWriteLine(const char* logInfo)
     char* dateTime = GetCurrentDateTime();
 
     fprintf(logFile, "[%s] %s\n", dateTime, logInfo);
+    printf("[%s] %s\n", dateTime, logInfo);
 
     free(dateTime);
 }
@@ -94,9 +96,8 @@ char* GetCurrentDateTime()
     time_t t = time(0);
     struct tm* now = localtime(&t);
 
-    char* timeNow = malloc(sizeof(char) * 21);
+    char *dateTime = malloc(sizeof(char) * 20);
+    strftime(dateTime, 20, "%Y-%m-%d %H:%M:%S", now);
 
-    sprintf(timeNow, "%d-%d-%d;%dh%dm%ds", now->tm_year + 1900, now->tm_mon + 1, now->tm_mday, now->tm_hour, now->tm_min, now->tm_sec);
-
-    return timeNow;
+    return dateTime;
 }

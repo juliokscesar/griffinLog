@@ -35,7 +35,7 @@ SOFTWARE.
 
 jkscLog::jkscLog()
 {
-    std::cout << "Default constructor of jkscLog called\n";
+    m_logFileName = "jkscLogFile.log";
 }
 
 jkscLog::jkscLog(const std::string& fileName)
@@ -59,6 +59,7 @@ bool jkscLog::Init(const std::string& fileName)
         m_logFile.open(fileName);
 
     WriteLine("Log Initiated");
+    m_logFileName = fileName;
 
     return m_logFile.is_open();
 }
@@ -67,6 +68,7 @@ void jkscLog::Write(const std::string& logInfo)
 {
     ASSERT_LOG_INIT();
     m_logFile << "[" << GetDateTimeNow() << "] " << logInfo;
+    std::cout << "[" << GetDateTimeNow() << "] " << logInfo;
 }
 
 void jkscLog::WriteLine(const std::string& logInfo)
@@ -108,11 +110,10 @@ const std::string jkscLog::GetDateTimeNow()
 {
     std::time_t t = std::time(0);
     std::tm* now = std::localtime(&t);
-    std::stringstream stream;
-    stream << std::put_time(now, "%Y-%m-%d;%H:%M:%S%p");
 
-    std::string timeNow;
-    stream >> timeNow;
+    char timeNow[20];
+    std::strftime(timeNow, sizeof(timeNow), "%Y-%m-%d %H:%M:%S", now);
+    const std::string dateTime(timeNow);
 
-    return timeNow;
+    return dateTime;
 }
