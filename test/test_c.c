@@ -26,7 +26,7 @@ SOFTWARE.
 
 /* 
 Compile with:
-gcc test_c.c ../Log.h
+gcc test_c.c ../Log.c
 */
 
 int main()

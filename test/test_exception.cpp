@@ -3,6 +3,11 @@
 
 #include "../cpp/Log.hpp"
 
+/* 
+Compile with:
+g++ test_exception.cpp ../cpp/Log.cpp
+*/
+
 int main()
 {
     jkscLog logger;
