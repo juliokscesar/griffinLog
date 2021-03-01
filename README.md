@@ -2,7 +2,7 @@
 jksc Logging Lib is a simple logging library just to include the basics of logging info to a file, what you could simply do with no library, but jksc helps by having no need to write every single time.
 
 ## Attention
-jsksc Logging Lib literally only includes the basics - Initiating, Writing and Finishing (and a function to get the datetime).
+jsksc Logging Lib literally only includes the basics - Initiating, Writing (Info, Warning, Critical) and Finishing (and a function to get the datetime).
 
 ## Getting Started
 To use the jksc Logging Lib, you only need to clone the repository or download the needed files for your programming language. **THIS IS NOT AN ADVANCED LIBRARY, ONLY SOMETHING I WROTE TO USE ON PERSONAL PROJECTS**.
@@ -18,7 +18,7 @@ Clone the repository with `git clone https://github.com/juliokscesar/jkscLogLib.
 - Log.cpp
 
 ## Building
-Just `#include "Log.h"` (C) or `#include "Log.hpp"` (C++) in your code and add Log.c (C) or Log.cpp (C++) to compile with your project. C++ files includes the log as a class, with automatic optional init on jkscLog constructor and automatic finish on its destructor.
+Just `#include "Log.h"` (C) or `#include "Log.hpp"` (C++) in your code and add Log.c (C) or Log.cpp (C++) to compile with your project. C++ files includes the log in a namespace.
 
 ## Example Code
 ### C
@@ -28,21 +28,21 @@ Just `#include "Log.h"` (C) or `#include "Log.hpp"` (C++) in your code and add L
 int main()
 {
     // Initiate log with custom name
-    // if (!LogInitCustom("test_log.log"))
+    // if (!LogInitCustom("testlog.log"))
         // return 1;
 
     // Initiate log with default name (logfile.log)
     if (!LogInit())
         return 1;
 
-    // Write line with \n at the end
-    LogWriteLine("testing c log line");
+    // Info logging
+    LogInfo("hello my name is %s how are you today?", "Julio");
 
-    // Write line with no \n at the end
-    LogWrite("testing c log\n");
+    // Warn Logging
+    LogWarn("Warning! This is a log warning to you %s", "user");
 
-    // Write a formatted string to the file (like fprintf)
-    LogWriteF("testing c log %s", "with formatted strings\n");
+    // Critical logging
+    LogCritical("Critical error! Find out today in %d", 2021);
 
     LogFinish();
     return 0;
@@ -55,31 +55,24 @@ int main()
 
 int main()
 {
-    // Create new logger
-    jkscLog logger;
+    // Initiate the log with default name ("logfile.log")
+    // jkscLog::Init();
 
-    // Create new logger already initializing it with custom name
-    // jkscLog logger("log_name.log");
+    // Initiate the log with custom name
+    if (!jkscLog::Init("log_cpp.log"))
+        return -1;
 
-    // Initiate with default name (jkscLogFile.log)
-    // logger.Init();
+    // Write log info
+    jkscLog::Info("This is a info log with %s", "formatted strings");
 
-    // Initiate with custom name
-    if (!logger.Init("logfile_name.log"))
-        return 1;
-
-    // Write with no \n at the end
-    logger.Write("Hello testing write\n");
-
-    // Write with \n at the end
-    logger.WriteLine("Now testing with breakline at the end");
+    // Write log warning
+    jkscLog::Warn("This is a warning log in %d", 2020 + 1);
     
-    // Write a formatted string
-    logger.WriteF("Hello %s this is a formatted string from %d\n", "you", 2021);
+    // Write log critical
+    jkscLog::Critical("Critical logging hello %s", "user");
 
-    // Call logger.Finish() method to close it
-    logger.Finish();
-    // It is called on the object destructor, so it is optional
+    // Finish the log
+    jkscLog::Finish();
 
     return 0;
 }
