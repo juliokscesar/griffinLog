@@ -31,89 +31,127 @@ SOFTWARE.
 #include <sstream>
 #include <stdexcept>
 
-#define ASSERT_LOG_INIT() if (!m_logFile.is_open()) throw std::runtime_error(std::string(__FILE__) + ":" + std::to_string(__LINE__) + " LOG WAS NOT INITIATED")
+#define ASSERT_LOG_INIT() if (!logFile.is_open()) throw std::runtime_error(std::string(__FILE__) + ":" + std::to_string(__LINE__) + " LOG WAS NOT INITIATED")
 
-jkscLog::jkscLog()
+namespace jkscLog
 {
-    m_logFileName = "jkscLogFile.log";
-}
+    static std::ofstream logFile;
 
-jkscLog::jkscLog(const std::string& fileName)
-{
-    Init(fileName);
-}
-
-bool jkscLog::Init()
-{
-    if (!m_logFile.is_open())
-        m_logFile.open("jkscLogFile.log");
-    
-    WriteLine("Log Initiated");
-
-    return m_logFile.is_open();
-}
-
-bool jkscLog::Init(const std::string& fileName)
-{
-    if (!m_logFile.is_open())
-        m_logFile.open(fileName);
-
-    WriteLine("Log Initiated");
-    m_logFileName = fileName;
-
-    return m_logFile.is_open();
-}
-
-void jkscLog::Write(const std::string& logInfo)
-{
-    ASSERT_LOG_INIT();
-    m_logFile << "[" << GetDateTimeNow() << "] " << logInfo;
-    std::cout << "[" << GetDateTimeNow() << "] " << logInfo;
-}
-
-void jkscLog::WriteLine(const std::string& logInfo)
-{
-    ASSERT_LOG_INIT();
-    Write(logInfo + "\n");
-}
-
-void jkscLog::WriteF(const std::string& formatLogInfo, ...)
-{
-    ASSERT_LOG_INIT();
-
-    va_list args;
-    va_start(args, formatLogInfo);
-
-    const int logSize = (int)formatLogInfo.length() + 256;
-    char *log = new char[logSize];
-
-    vsprintf(log, formatLogInfo.c_str(), args);
-
-    Write(log);
-
-    delete[] log;
-    va_end(args);
-}
-
-bool jkscLog::Finish()
-{
-    if (m_logFile.is_open())
+    bool Init()
     {
-        WriteLine("Log Finished");
-        m_logFile.close();
+        if (!logFile.is_open())
+            logFile.open("logfile.log", std::ofstream::out);
+
+        Info("Log Initiated");
+
+        return logFile.is_open();
     }
 
-    return !m_logFile.is_open();
-}
+    bool Init(const std::string &logFileName)
+    {
+        if (!logFile.is_open())
+            logFile.open(logFileName, std::ofstream::out);
 
-const std::string jkscLog::GetDateTimeNow()
-{
-    std::time_t t = std::time(0);
-    std::tm* now = std::localtime(&t);
+        Info("Log Initiated");
 
-    char timeNow[20];
-    std::strftime(timeNow, sizeof(timeNow), "%Y-%m-%d %H:%M:%S", now);
-    const std::string dateTime(timeNow);
+        return logFile.is_open();
+    }
 
-    return dateTime;
+    void LogWriteMode(LogMode logMode, const std::string &log)
+    {
+        ASSERT_LOG_INIT();
+
+        std::string mode;
+        std::string colorMode;
+
+        switch (logMode)
+        {
+            case LogMode::INFO:
+                mode = "INFO";
+                colorMode = ANSI_COLOR_BLUE;
+                break;
+
+            case LogMode::WARN:
+                mode = "WARN";
+                colorMode = ANSI_COLOR_YELLOW;
+                break;
+
+            case LogMode::CRITICAL:
+                mode = "CRITICAL";
+                colorMode = ANSI_COLOR_RED;
+                break;
+
+            default:
+                throw std::runtime_error("Invalid log mode\n");
+                break;
+        }
+
+        logFile << "[" << GetDateTimeNow() << "] [" << mode << "] " << log << "\n";
+        std::cout << "[" << GetDateTimeNow() << "] " << colorMode << "[" << mode << "] " << ANSI_COLOR_RESET  << log << "\n";
+    }
+
+    void Info(const std::string &logInfo, ...)
+    {
+        va_list args;
+        va_start(args, logInfo);
+
+        char *log = new char[logInfo.size() + 256];
+        vsprintf(log, logInfo.c_str(), args);
+
+        LogWriteMode(LogMode::INFO, log);
+
+        delete[] log;
+        va_end(args);
+    }
+
+    void Warn(const std::string &logWarn, ...)
+    {
+        va_list args;
+        va_start(args, logWarn);
+
+        char *log = new char[logWarn.size() + 256];
+        vsprintf(log, logWarn.c_str(), args);
+
+        LogWriteMode(LogMode::WARN, log);
+
+        delete[] log;
+        va_end(args);
+    }
+
+    void Critical(const std::string &logCritical, ...)
+    {
+        va_list args;
+        va_start(args, logCritical);
+
+        char *log = new char[logCritical.size() + 256];
+        vsprintf(log, logCritical.c_str(), args);
+
+        LogWriteMode(LogMode::CRITICAL, log);
+
+        delete[] log;
+        va_end(args);
+    }
+
+    bool Finish()
+    {
+        Info("Log Finished");
+
+        if (logFile.is_open())
+            logFile.close();
+
+        return !logFile.is_open();
+    }
+
+    const std::string GetDateTimeNow()
+    {
+        std::time_t t = std::time(0);
+        std::tm* now = std::localtime(&t);
+
+        char timeNow[20];
+        std::strftime(timeNow, sizeof(timeNow), "%Y-%m-%d %H:%M:%S", now);
+        const std::string dateTime(timeNow);
+
+        return dateTime;
+    }
+
 }

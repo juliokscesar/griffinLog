@@ -31,31 +31,24 @@ g++ test_cpp.cpp ../cpp/Log.cpp
 
 int main()
 {
-    // Create new logger
-    jkscLog logger;
+    // Initiate the log with default name ("logfile.log")
+    // jkscLog::Init();
 
-    // Create new logger already initializing it with custom name
-    // jkscLog logger("log_name.log");
+    // Initiate the log with custom name
+    if (!jkscLog::Init("log_cpp.log"))
+        return -1;
 
-    // Initiate with default name (jkscLogFile.log)
-    // logger.Init();
+    // Write log info
+    jkscLog::Info("This is a info log with %s", "formatted strings");
 
-    // Initiate with custom name
-    if (!logger.Init("logfile_name.log"))
-        return 1;
-
-    // Write with no \n at the end
-    logger.Write("Hello testing write\n");
-
-    // Write with \n at the end
-    logger.WriteLine("Now testing with breakline at the end");
+    // Write log warning
+    jkscLog::Warn("This is a warning log in %d", 2020 + 1);
     
-    // Write a formatted string
-    logger.WriteF("Hello %s this is a formatted string from %d\n", "you", 2021);
+    // Write log critical
+    jkscLog::Critical("Critical logging hello %s", "user");
 
-    // Call logger.Finish() method to close it
-    logger.Finish();
-    // It is called on the object destructor, so it is optional
+    // Finish the log
+    jkscLog::Finish();
 
     return 0;
 }

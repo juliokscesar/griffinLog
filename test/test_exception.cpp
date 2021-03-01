@@ -10,10 +10,9 @@ g++ test_exception.cpp ../cpp/Log.cpp
 
 int main()
 {
-    jkscLog logger;
     try
     {
-        logger.Write("Hello\n");
+        jkscLog::Critical("Trying to log without initiating");
     }
     catch(const std::exception& e)
     {

@@ -62,13 +62,13 @@ int main()
 {
     double start = get_time();
 
-    jkscLog logger("benchmark_cpp.log");
+    jkscLog::Init("benchmark_cpp.log");
 
-    logger.WriteLine("Starting at year 2021 testing jkscLog");
-    logger.Write("Midterm on Write method\n");
-    logger.WriteF("Finishing with %s on %d\n", "formatted string", 2021);
+    jkscLog::Info("Writing INFO to log");
+    jkscLog::Warn("Warning! Log warn benchmarking test");
+    jkscLog::Critical("Testing critical log %s", "on benchmark.cpp");
 
-    logger.Finish();
+    jkscLog::Finish();
 
     double end = get_time();
     

@@ -39,14 +39,14 @@ int main()
     if (!LogInit())
         return 1;
 
-    // Write line with \n at the end
-    LogWriteLine("testing c log line");
+    // Info logging
+    LogInfo("hello my name is %s how are you today?", "Julio");
 
-    // Write line with no \n at the end
-    LogWrite("testing c log\n");
+    // Warn Logging
+    LogWarn("Warning! This is a log warning to you %s", "user");
 
-    // Write a formatted string to the file (like fprintf)
-    LogWriteF("testing c log %s", "with formatted strings\n");
+    // Critical logging
+    LogCritical("Critical error! Find out today in %d", 2021);
 
     LogFinish();
     return 0;

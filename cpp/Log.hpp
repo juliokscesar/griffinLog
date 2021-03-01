@@ -25,6 +25,14 @@ SOFTWARE.
 #ifndef LOG_H
 #define LOG_H
 
+#define ANSI_COLOR_RED     "\x1b[31m"
+#define ANSI_COLOR_GREEN   "\x1b[32m"
+#define ANSI_COLOR_YELLOW  "\x1b[33m"
+#define ANSI_COLOR_BLUE    "\x1b[34m"
+#define ANSI_COLOR_MAGENTA "\x1b[35m"
+#define ANSI_COLOR_CYAN    "\x1b[36m"
+#define ANSI_COLOR_RESET   "\x1b[0m"
+
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -32,38 +40,26 @@ SOFTWARE.
 #include <cstdio>
 #include <exception>
 
-enum class LogMode
+namespace jkscLog
 {
-    Info     = 0,
-    Warning  = 1,
-    Error    = 2,
-    Critical = 3
-};
-
-class jkscLog
-{
-public:
-    jkscLog();
-    jkscLog(const std::string& fileName);
+    enum class LogMode
+    {
+        INFO     = 0,
+        WARN     = 1,
+        CRITICAL = 2
+    };
 
     bool Init();
-    bool Init(const std::string& fileName);
+    bool Init(const std::string &logFileName);
 
-    void Write(const std::string& logInfo);
-    void WriteLine(const std::string& logInfo);
-    void WriteF(const std::string& formatLogInfo, ...);
+    void LogWriteMode(LogMode logMode, const std::string &log);
+    void Info(const std::string &logInfo, ...);
+    void Warn(const std::string &logWarn, ...);
+    void Critical(const std::string &logCritical, ...);
 
     bool Finish();
 
-    ~jkscLog()
-    {
-        this->Finish();
-    }
-
-private:
-    std::ofstream m_logFile;
-    std::string m_logFileName;
     const std::string GetDateTimeNow();
-};
+}
 
 #endif // LOG_H

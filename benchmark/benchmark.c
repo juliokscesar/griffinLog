@@ -64,9 +64,9 @@ int main()
 
     LogInitCustom("benchmarking_log_C.log");
 
-    LogWrite("First message\n");
-    LogWriteLine("Seconds Message");
-    LogWriteF("%s message (%d)\n", "Third", 3);
+    LogInfo("Writing INFO to log");
+    LogWarn("Warning! Log warn benchmarking test");
+    LogCritical("Testing critical log %s", "on benchmark.c");
 
     LogFinish();
 

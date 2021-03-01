@@ -24,14 +24,14 @@ SOFTWARE.
 
 #include "Log.h"
 
-static FILE* logFile;
+static FILE *logFile;
 
 int LogInit()
 {
     if (!logFile)
         logFile = fopen("logfile.log", "w");
 
-    LogWriteLine("Log Initiated");
+    LogInfo("Log Intiated");
     return !(logFile == NULL);
 }
 
@@ -40,50 +40,94 @@ int LogInitCustom(const char* fileName)
     if (!logFile)
         logFile = fopen(fileName, "w");
 
-    LogWriteLine("Log Initiated");
+    LogInfo("Log Initiated");
     return !(logFile == NULL);
 }
 
-void LogWrite(const char* logInfo)
+void LogWriteMode(int logMode, char *log)
 {
-    char* dateTime = GetCurrentDateTime();
+    char *dateTime = GetCurrentDateTime();
+    char mode[9];
+    char modeColor[9];
 
-    fprintf(logFile, "[%s] %s", dateTime, logInfo);
-    printf("[%s] %s", dateTime, logInfo);
+    switch (logMode)
+    {
+        case INFO:
+            strcpy(mode, "INFO");
+            strcpy(modeColor, ANSI_COLOR_BLUE);
+            break;
+        
+        case WARN:
+            strcpy(mode, "WARN");
+            strcpy(modeColor, ANSI_COLOR_YELLOW);
+            break;
+        
+        case CRITICAL:
+            strcpy(mode, "CRITICAL");
+            strcpy(modeColor, ANSI_COLOR_RED);
+            break;
+
+        default:
+            fprintf(stderr, "Invalid log mode\n");
+            return;
+    }
+
+    fprintf(logFile, "[%s] [%s] %s\n", dateTime, mode, log);
+
+    printf("[%s] [%s%s%s] %s\n", dateTime, modeColor, mode, ANSI_COLOR_RESET, log);
 
     free(dateTime);
+    free(log);
 }
 
-void LogWriteLine(const char* logInfo)
-{
-    char* dateTime = GetCurrentDateTime();
-
-    fprintf(logFile, "[%s] %s\n", dateTime, logInfo);
-    printf("[%s] %s\n", dateTime, logInfo);
-
-    free(dateTime);
-}
-
-void LogWriteF(const char* formatLog, ...)
+void LogInfo(const char *logInfo, ...)
 {
     va_list args;
-    va_start(args, formatLog);
+    va_start(args, logInfo);
 
-    const int logSize = (int)strlen(formatLog) + 256;
-    char* log = malloc(logSize);
+    const int logSize = (int)strlen(logInfo) + 256;
+    char *log = malloc(sizeof(char) * logSize);
 
-    vsprintf(log, formatLog, args);
+    vsprintf(log, logInfo, args);
 
-    LogWrite(log);
+    LogWriteMode(INFO, log);
 
-    free(log);
+    va_end(args);
+}
+
+void LogWarn(const char *logWarn, ...)
+{
+    va_list args;
+    va_start(args, logWarn);
+
+    const int logSize = (int)strlen(logWarn) + 256;
+    char *log = malloc(sizeof(char) * logSize);
+
+    vsprintf(log, logWarn, args);
+
+    LogWriteMode(WARN, log);
+
+    va_end(args);
+}
+
+void LogCritical(const char *logCritical, ...)
+{
+    va_list args;
+    va_start(args, logCritical);
+
+    const int logSize = (int)strlen(logCritical) + 256;
+    char *log = malloc(sizeof(char) * logSize);
+
+    vsprintf(log, logCritical, args);
+
+    LogWriteMode(CRITICAL, log);
 
     va_end(args);
 }
 
 int LogFinish()
 {
-    LogWriteLine("Log Finished");
+    LogInfo("Log Finished");
     
     if (logFile)
         fclose(logFile);
@@ -91,10 +135,10 @@ int LogFinish()
     return (logFile == NULL);
 }
 
-char* GetCurrentDateTime()
+char *GetCurrentDateTime()
 {
     time_t t = time(0);
-    struct tm* now = localtime(&t);
+    struct tm *now = localtime(&t);
 
     char *dateTime = malloc(sizeof(char) * 20);
     strftime(dateTime, 20, "%Y-%m-%d %H:%M:%S", now);
