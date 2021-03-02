@@ -96,7 +96,7 @@ namespace jkscLog
         va_start(args, logInfo);
 
         char *log = new char[logInfo.size() + 256];
-        vsprintf(log, logInfo.c_str(), args);
+        vsnprintf(log, logInfo.size() + 255, logInfo.c_str(), args);
 
         LogWriteMode(LogMode::INFO, log);
 
@@ -110,7 +110,7 @@ namespace jkscLog
         va_start(args, logWarn);
 
         char *log = new char[logWarn.size() + 256];
-        vsprintf(log, logWarn.c_str(), args);
+        vsnprintf(log, logWarn.size() + 255, logWarn.c_str(), args);
 
         LogWriteMode(LogMode::WARN, log);
 
@@ -124,7 +124,7 @@ namespace jkscLog
         va_start(args, logCritical);
 
         char *log = new char[logCritical.size() + 256];
-        vsprintf(log, logCritical.c_str(), args);
+        vsnprintf(log, logCritical.size() + 255, logCritical.c_str(), args);
 
         LogWriteMode(LogMode::CRITICAL, log);
 

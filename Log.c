@@ -51,7 +51,7 @@ void LogWriteMode(int logMode, char *log)
 
     char *dateTime = GetCurrentDateTime();
     char mode[9];
-    char modeColor[9];
+    char modeColor[23];
 
     switch (logMode)
     {
