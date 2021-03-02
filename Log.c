@@ -46,6 +46,9 @@ int LogInitCustom(const char* fileName)
 
 void LogWriteMode(int logMode, char *log)
 {
+    if (!logFile)
+        return;
+
     char *dateTime = GetCurrentDateTime();
     char mode[9];
     char modeColor[9];
@@ -88,7 +91,7 @@ void LogInfo(const char *logInfo, ...)
     const int logSize = (int)strlen(logInfo) + 256;
     char *log = malloc(sizeof(char) * logSize);
 
-    vsprintf(log, logInfo, args);
+    vsnprintf(log, logSize - 1, logInfo, args);
 
     LogWriteMode(INFO, log);
 
@@ -103,7 +106,7 @@ void LogWarn(const char *logWarn, ...)
     const int logSize = (int)strlen(logWarn) + 256;
     char *log = malloc(sizeof(char) * logSize);
 
-    vsprintf(log, logWarn, args);
+    vsnprintf(log, logSize - 1, logWarn, args);
 
     LogWriteMode(WARN, log);
 
@@ -118,7 +121,7 @@ void LogCritical(const char *logCritical, ...)
     const int logSize = (int)strlen(logCritical) + 256;
     char *log = malloc(sizeof(char) * logSize);
 
-    vsprintf(log, logCritical, args);
+    vsnprintf(log, logSize - 1, logCritical, args);
 
     LogWriteMode(CRITICAL, log);
 

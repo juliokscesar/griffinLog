@@ -145,8 +145,8 @@ namespace jkscLog
     const std::string GetDateTimeNow()
     {
         std::time_t t = std::time(0);
-        std::tm* now = std::localtime(&t);
-
+        std::tm *now = std::localtime(&t);
+        
         char timeNow[20];
         std::strftime(timeNow, sizeof(timeNow), "%Y-%m-%d %H:%M:%S", now);
         const std::string dateTime(timeNow);
