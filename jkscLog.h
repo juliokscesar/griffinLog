@@ -39,7 +39,7 @@ SOFTWARE.
 #include <string.h>
 #include <time.h>
 
-typedef enum LogMode
+typedef enum
 {
     INFO     = 0,
     DEBUG    = 1,
@@ -47,14 +47,14 @@ typedef enum LogMode
     CRITICAL = 3
 } LogMode;
 
-int LogInit();
-int LogInitCustom(const char* fileName);
-void LogWriteMode(int logMode, char *log);
-void LogInfo(const char *logInfo, ...);
-void LogDebug(const char *logDebug, ...);
-void LogWarn(const char *logWarn, ...);
-void LogCritical(const char *logCritical, ...);
-int LogFinish();
+int jkscLogInit();
+int jkscLogInitCustom(const char* fileName);
+void jkscLogWriteMode(int logMode, char *log);
+void jkscLogInfo(const char *logInfo, ...);
+void jkscLogDebug(const char *logDebug, ...);
+void jkscLogWarn(const char *logWarn, ...);
+void jkscLogCritical(const char *logCritical, ...);
+int jkscLogFinish();
 
 char *GetCurrentDateTime();
 

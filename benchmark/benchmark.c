@@ -62,13 +62,13 @@ int main()
 {
     double start = get_time();
 
-    LogInitCustom("benchmarking_log_C.log");
+    jkscLogInitCustom("benchmarking_log_C.log");
 
-    LogInfo("Writing INFO to log");
-    LogWarn("Warning! Log warn benchmarking test");
-    LogCritical("Testing critical log %s", "on benchmark.c");
+    jkscLogInfo("Writing INFO to log");
+    jkscLogWarn("Warning! Log warn benchmarking test");
+    jkscLogCritical("Testing critical log %s", "on benchmark.c");
 
-    LogFinish();
+    jkscLogFinish();
 
     double end = get_time();
 

@@ -36,21 +36,21 @@ int main()
         // return 1;
 
     // Initiate log with default name (logfile.log)
-    if (!LogInit())
+    if (!jkscLogInit())
         return 1;
 
     // Info logging
-    LogInfo("hello my name is %s how are you today?", "Julio");
+    jkscLogInfo("hello my name is %s how are you today?", "Julio");
 
     // Debug logging
-    LogDebug("hello this is a %s debug message in %d", "formatted", 2021);
+    jkscLogDebug("hello this is a %s debug message in %d", "formatted", 2021);
 
     // Warn Logging
-    LogWarn("Warning! This is a log warning to you %s", "user");
+    jkscLogWarn("Warning! This is a log warning to you %s", "user");
 
     // Critical logging
-    LogCritical("Critical error! Find out today in %d", 2021);
+    jkscLogCritical("Critical error! Find out today in %d", 2021);
 
-    LogFinish();
+    jkscLogFinish();
     return 0;
 }

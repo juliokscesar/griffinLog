@@ -26,25 +26,25 @@ SOFTWARE.
 
 static FILE *logFile;
 
-int LogInit()
+int jkscLogInit()
 {
     if (!logFile)
         logFile = fopen("logfile.log", "w");
 
-    LogInfo("Log Intiated");
+    jkscLogInfo("Log Intiated");
     return !(logFile == NULL);
 }
 
-int LogInitCustom(const char* fileName)
+int jkscLogInitCustom(const char* fileName)
 {
     if (!logFile)
         logFile = fopen(fileName, "w");
 
-    LogInfo("Log Initiated");
+    jkscLogInfo("Log Initiated");
     return !(logFile == NULL);
 }
 
-void LogWriteMode(int logMode, char *log)
+void jkscLogWriteMode(int logMode, char *log)
 {
     if (!logFile)
         return;
@@ -88,7 +88,7 @@ void LogWriteMode(int logMode, char *log)
     free(log);
 }
 
-void LogInfo(const char *logInfo, ...)
+void jkscLogInfo(const char *logInfo, ...)
 {
     va_list args;
     va_start(args, logInfo);
@@ -98,12 +98,12 @@ void LogInfo(const char *logInfo, ...)
 
     vsnprintf(log, logSize - 1, logInfo, args);
 
-    LogWriteMode(INFO, log);
+    jkscLogWriteMode(INFO, log);
 
     va_end(args);
 }
 
-void LogDebug(const char *logDebug, ...)
+void jkscLogDebug(const char *logDebug, ...)
 {
 	va_list args;
 	va_start(args, logDebug);
@@ -113,12 +113,12 @@ void LogDebug(const char *logDebug, ...)
 	
 	vsnprintf(log, logSize - 1, logDebug, args);
 
-	LogWriteMode(DEBUG, log);
+	jkscLogWriteMode(DEBUG, log);
 
 	va_end(args);
 }
 
-void LogWarn(const char *logWarn, ...)
+void jkscLogWarn(const char *logWarn, ...)
 {
     va_list args;
     va_start(args, logWarn);
@@ -128,12 +128,12 @@ void LogWarn(const char *logWarn, ...)
 
     vsnprintf(log, logSize - 1, logWarn, args);
 
-    LogWriteMode(WARN, log);
+    jkscLogWriteMode(WARN, log);
 
     va_end(args);
 }
 
-void LogCritical(const char *logCritical, ...)
+void jkscLogCritical(const char *logCritical, ...)
 {
     va_list args;
     va_start(args, logCritical);
@@ -143,14 +143,14 @@ void LogCritical(const char *logCritical, ...)
 
     vsnprintf(log, logSize - 1, logCritical, args);
 
-    LogWriteMode(CRITICAL, log);
+    jkscLogWriteMode(CRITICAL, log);
 
     va_end(args);
 }
 
-int LogFinish()
+int jkscLogFinish()
 {
-    LogInfo("Log Finished");
+    jkscLogInfo("Log Finished");
     
     if (logFile)
         fclose(logFile);
