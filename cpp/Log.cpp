@@ -70,6 +70,11 @@ namespace jkscLog
                 mode = "INFO";
                 colorMode = ANSI_COLOR_BLUE;
                 break;
+	   
+	    case LogMode::DEBUG:
+		mode = "DEBUG";
+		colorMode = ANSI_COLOR_GREEN;
+		break;
 
             case LogMode::WARN:
                 mode = "WARN";
@@ -103,6 +108,20 @@ namespace jkscLog
         delete[] log;
         va_end(args);
     }
+
+    void Debug(const std::string &logDebug, ...)
+    {
+	va_list args;
+	va_start(args, logDebug);
+
+	char *log = new char[logDebug.size() + 256];
+	vsnprintf(log, logDebug.size() + 255, logDebug.c_str(), args);
+
+	LogWriteMode(LogMode::DEBUG, log);
+
+	delete[] log;
+	va_end(args);
+    }    
 
     void Warn(const std::string &logWarn, ...)
     {

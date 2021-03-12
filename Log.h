@@ -39,17 +39,19 @@ SOFTWARE.
 #include <string.h>
 #include <time.h>
 
-enum LogMode
+typedef enum LogMode
 {
     INFO     = 0,
-    WARN     = 1,
-    CRITICAL = 2
-};
+    DEBUG    = 1,
+    WARN     = 2,
+    CRITICAL = 3
+} LogMode;
 
 int LogInit();
 int LogInitCustom(const char* fileName);
 void LogWriteMode(int logMode, char *log);
 void LogInfo(const char *logInfo, ...);
+void LogDebug(const char *logDebug, ...);
 void LogWarn(const char *logWarn, ...);
 void LogCritical(const char *logCritical, ...);
 int LogFinish();

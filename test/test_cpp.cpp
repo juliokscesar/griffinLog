@@ -40,6 +40,9 @@ int main()
 
     // Write log info
     jkscLog::Info("This is a info log with %s", "formatted strings");
+    
+    // Write log debug
+    jkscLog::Debug("This is a debug log with %s with color %s written in %d", "formatted strings", "green", 2021);
 
     // Write log warning
     jkscLog::Warn("This is a warning log in %d", 2020 + 1);

@@ -59,7 +59,12 @@ void LogWriteMode(int logMode, char *log)
             strcpy(mode, "INFO");
             strcpy(modeColor, ANSI_COLOR_BLUE);
             break;
-        
+	
+    	case DEBUG:
+	    strcpy(mode, "DEBUG");
+	    strcpy(modeColor, ANSI_COLOR_GREEN);
+	    break;	    
+
         case WARN:
             strcpy(mode, "WARN");
             strcpy(modeColor, ANSI_COLOR_YELLOW);
@@ -96,6 +101,21 @@ void LogInfo(const char *logInfo, ...)
     LogWriteMode(INFO, log);
 
     va_end(args);
+}
+
+void LogDebug(const char *logDebug, ...)
+{
+	va_list args;
+	va_start(args, logDebug);
+
+	const int logSize = (int)strlen(logDebug) + 256;
+	char *log = malloc(sizeof(char) * logSize);
+	
+	vsnprintf(log, logSize - 1, logDebug, args);
+
+	LogWriteMode(DEBUG, log);
+
+	va_end(args);
 }
 
 void LogWarn(const char *logWarn, ...)

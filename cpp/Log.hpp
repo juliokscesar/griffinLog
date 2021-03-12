@@ -45,8 +45,9 @@ namespace jkscLog
     enum class LogMode
     {
         INFO     = 0,
-        WARN     = 1,
-        CRITICAL = 2
+	DEBUG    = 1,
+        WARN     = 2,
+        CRITICAL = 3
     };
 
     bool Init();
@@ -54,6 +55,7 @@ namespace jkscLog
 
     void LogWriteMode(LogMode logMode, const std::string &log);
     void Info(const std::string &logInfo, ...);
+    void Debug(const std::string &logDebug, ...);
     void Warn(const std::string &logWarn, ...);
     void Critical(const std::string &logCritical, ...);
 

@@ -42,6 +42,9 @@ int main()
     // Info logging
     LogInfo("hello my name is %s how are you today?", "Julio");
 
+    // Debug logging
+    LogDebug("hello this is a %s debug message in %d", "formatted", 2021);
+
     // Warn Logging
     LogWarn("Warning! This is a log warning to you %s", "user");
 
