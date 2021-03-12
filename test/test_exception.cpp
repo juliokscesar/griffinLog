@@ -1,11 +1,11 @@
 #include <iostream>
 #include <stdexcept>
 
-#include "../cpp/Log.hpp"
+#include "../cpp/jkscLog.hpp"
 
 /* 
 Compile with:
-g++ test_exception.cpp ../cpp/Log.cpp
+g++ test_exception.cpp ../cpp/jkscLog.cpp
 */
 
 int main()

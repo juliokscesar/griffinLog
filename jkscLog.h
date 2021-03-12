@@ -22,56 +22,40 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-/*
-Compile With:
-g++ -o benchmark benchmark.cpp ../cpp/jkscLog.cpp
-*/
+#ifndef LOG_H
+#define LOG_H
 
-#include <iostream>
+#define ANSI_COLOR_RED     "\x1b[31;1;1m"
+#define ANSI_COLOR_GREEN   "\x1b[32;1;1m"
+#define ANSI_COLOR_YELLOW  "\x1b[38;2;255;255;1;1m"
+#define ANSI_COLOR_BLUE    "\x1b[34;1;1m"
+#define ANSI_COLOR_MAGENTA "\x1b[35;1;1m"
+#define ANSI_COLOR_CYAN    "\x1b[36;1;1m"
+#define ANSI_COLOR_RESET   "\x1b[0m"
 
-#ifdef _WIN32
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdarg.h>
+#include <string.h>
+#include <time.h>
 
-#include <windows.h>
-
-#else
-
-#include <sys/time.h>
-#include <sys/resource.h>
-
-#endif // _WIN32
-
-#include "../cpp/jkscLog.hpp"
-
-
-double get_time()
+typedef enum LogMode
 {
-    #ifdef _WIN32
-    LARGE_INTEGER t, f;
-    QueryPerformanceCounter(&t);
-    QueryPerformanceFrequency(&f);
-    return (double)t.QuadPart/(double)f.QuadPart;
-    #else
-    struct timeval t;
-    struct timezone tzp;
-    gettimeofday(&t, &tzp);
-    return t.tv_sec + t.tv_usec*1e-6;
-    #endif // _WIN32
-}
+    INFO     = 0,
+    DEBUG    = 1,
+    WARN     = 2,
+    CRITICAL = 3
+} LogMode;
 
-int main()
-{
-    double start = get_time();
+int LogInit();
+int LogInitCustom(const char* fileName);
+void LogWriteMode(int logMode, char *log);
+void LogInfo(const char *logInfo, ...);
+void LogDebug(const char *logDebug, ...);
+void LogWarn(const char *logWarn, ...);
+void LogCritical(const char *logCritical, ...);
+int LogFinish();
 
-    jkscLog::Init("benchmark_cpp.log");
+char *GetCurrentDateTime();
 
-    jkscLog::Info("Writing INFO to log");
-    jkscLog::Warn("Warning! Log warn benchmarking test");
-    jkscLog::Critical("Testing critical log %s", "on benchmark.cpp");
-
-    jkscLog::Finish();
-
-    double end = get_time();
-    
-    std::cout << "Duration = " << (end - start) * 1000 << " milliseconds \n";
-    return 0;
-}
+#endif // LOG_H

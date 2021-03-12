@@ -22,7 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "Log.hpp"
+#include "jkscLog.hpp"
 
 #include <iostream>
 #include <iomanip>

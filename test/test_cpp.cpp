@@ -22,11 +22,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "../cpp/Log.hpp"
+#include "../cpp/jkscLog.hpp"
 
 /* 
 Compile with:
-g++ test_cpp.cpp ../cpp/Log.cpp
+g++ test_cpp.cpp ../cpp/jkscLog.cpp
 */
 
 int main()

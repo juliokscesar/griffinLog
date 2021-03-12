@@ -24,7 +24,7 @@ SOFTWARE.
 
 /*
 Compile With:
-g++ -o benchmark benchmark.cpp ../cpp/Log.cpp
+g++ -o benchmark benchmark.c ../jkscLog.h
 */
 
 #include <stdio.h>
@@ -40,7 +40,7 @@ g++ -o benchmark benchmark.cpp ../cpp/Log.cpp
 
 #endif // _WIN32
 
-#include "../Log.h"
+#include "../jkscLog.h"
 
 
 double get_time()
