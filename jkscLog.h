@@ -49,11 +49,13 @@ typedef enum
 
 int jkscLogInit();
 int jkscLogInitCustom(const char* fileName);
+
 void jkscLogWriteMode(int logMode, char *log);
 void jkscLogInfo(const char *logInfo, ...);
 void jkscLogDebug(const char *logDebug, ...);
 void jkscLogWarn(const char *logWarn, ...);
 void jkscLogCritical(const char *logCritical, ...);
+
 int jkscLogFinish();
 
 char *GetCurrentDateTime();

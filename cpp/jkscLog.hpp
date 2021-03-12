@@ -45,7 +45,7 @@ namespace jkscLog
     enum class LogMode
     {
         INFO     = 0,
-	DEBUG    = 1,
+	    DEBUG    = 1,
         WARN     = 2,
         CRITICAL = 3
     };

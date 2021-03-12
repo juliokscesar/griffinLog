@@ -24,12 +24,28 @@ SOFTWARE.
 
 #include "jkscLog.h"
 
+#if defined(WIN32) || defined(_WIN32)
+#include <windows.h>
+#endif
+
 static FILE *logFile;
+
+void createLogDir()
+{
+    #if defined(WIN32) || defined(_WIN32)
+    CreateDirectoryA("logs", NULL);
+    #else
+    system("mkdir -p ./logs");
+    #endif
+}
 
 int jkscLogInit()
 {
     if (!logFile)
-        logFile = fopen("logfile.log", "w");
+    {
+        createLogDir();
+        logFile = fopen("logs/logfile.log", "w");
+    }
 
     jkscLogInfo("Log Intiated");
     return !(logFile == NULL);
@@ -37,8 +53,14 @@ int jkscLogInit()
 
 int jkscLogInitCustom(const char* fileName)
 {
+    char filePath[256] = "logs/";
+    strncat(filePath, fileName, 255);
+
     if (!logFile)
-        logFile = fopen(fileName, "w");
+    {
+        createLogDir();
+        logFile = fopen(filePath, "w");
+    }
 
     jkscLogInfo("Log Initiated");
     return !(logFile == NULL);

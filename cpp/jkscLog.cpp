@@ -31,16 +31,32 @@ SOFTWARE.
 #include <sstream>
 #include <stdexcept>
 
+#if defined(WIN32) || defined(_WIN32)
+#include <windows.h>
+#endif
+
 #define ASSERT_LOG_INIT() if (!logFile.is_open()) throw std::runtime_error(std::string(__FILE__) + ":" + std::to_string(__LINE__) + " LOG WAS NOT INITIATED")
 
 namespace jkscLog
 {
     static std::ofstream logFile;
 
+    void createLogDir()
+    {
+        #if defined(WIN32) || defined(_WIN32)
+        CreateDirectoryA("logs", NULL);
+        #else
+        system("mkdir -p ./logs");
+        #endif
+    }
+
     bool Init()
     {
         if (!logFile.is_open())
-            logFile.open("logfile.log", std::ofstream::out);
+        {
+            createLogDir();
+            logFile.open("logs/logfile.log", std::ofstream::out);
+        }
 
         Info("Log Initiated");
 
@@ -50,7 +66,10 @@ namespace jkscLog
     bool Init(const std::string &logFileName)
     {
         if (!logFile.is_open())
-            logFile.open(logFileName, std::ofstream::out);
+        {
+            createLogDir();
+            logFile.open(std::string("logs/") + logFileName, std::ofstream::out);
+        }
 
         Info("Log Initiated");
 
@@ -71,10 +90,10 @@ namespace jkscLog
                 colorMode = ANSI_COLOR_BLUE;
                 break;
 	   
-	    case LogMode::DEBUG:
-		mode = "DEBUG";
-		colorMode = ANSI_COLOR_GREEN;
-		break;
+	        case LogMode::DEBUG:
+		        mode = "DEBUG";
+		        colorMode = ANSI_COLOR_GREEN;
+		        break;
 
             case LogMode::WARN:
                 mode = "WARN";
