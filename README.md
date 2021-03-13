@@ -10,15 +10,15 @@ Clone the repository with `git clone https://github.com/juliokscesar/jkscLogLib.
 
 ### Requirements
 #### C
-- Log.h
-- Log.c
+- jkscLog.h
+- jkscLog.c
 
 #### C++ (files are in cpp folder)
-- Log.hpp
-- Log.cpp
+- jkscLog.hpp
+- jkscLog.cpp
 
 ## Building
-Just `#include "Log.h"` (C) or `#include "Log.hpp"` (C++) in your code and add Log.c (C) or Log.cpp (C++) to compile with your project. C++ files includes the log in a namespace.
+Just `#include "jkscLog.h"` (C) or `#include "jkscLog.hpp"` (C++) in your code and add Log.c (C) or Log.cpp (C++) to compile with your project. C++ files includes the log in a namespace.
 
 ## Example Code
 ### C
