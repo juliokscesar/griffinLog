@@ -2,7 +2,7 @@
 jksc Logging Lib is a simple logging library just to include the basics of logging info to a file, what you could simply do with no library, but jksc helps by having no need to write every single time.
 
 ## Attention
-jsksc Logging Lib literally only includes the basics - Initiating, Writing (Info, Warning, Critical) and Finishing (and a function to get the datetime).
+jsksc Logging Lib literally only includes the basics - Initiating, Writing (Info, Debug, Warning, Critical) and Finishing (and a function to get the datetime).
 
 ## Getting Started
 To use the jksc Logging Lib, you only need to clone the repository or download the needed files for your programming language. **THIS IS NOT AN ADVANCED LIBRARY, ONLY SOMETHING I WROTE TO USE ON PERSONAL PROJECTS**.
@@ -23,7 +23,7 @@ Just `#include "jkscLog.h"` (C) or `#include "jkscLog.hpp"` (C++) in your code a
 ## Example Code
 ### C
 ```c
-#include "Log.h"
+#include "jkscLog.h"
 
 int main()
 {
@@ -32,26 +32,29 @@ int main()
         // return 1;
 
     // Initiate log with default name (logfile.log)
-    if (!LogInit())
+    if (!jkscLogInit())
         return 1;
 
     // Info logging
-    LogInfo("hello my name is %s how are you today?", "Julio");
+    jkscLogInfo("hello my name is %s how are you today?", "Julio");
+
+    // Debug logging
+    jkscLogDebug("hello this is a %s debug message in %d", "formatted", 2021);
 
     // Warn Logging
-    LogWarn("Warning! This is a log warning to you %s", "user");
+    jkscLogWarn("Warning! This is a log warning to you %s", "user");
 
     // Critical logging
-    LogCritical("Critical error! Find out today in %d", 2021);
+    jkscLogCritical("Critical error! Find out today in %d", 2021);
 
-    LogFinish();
+    jkscLogFinish();
     return 0;
 }
 ```
 
 ### C++
 ```cpp
-#include "Log.hpp"
+#include "jkscLog.hpp"
 
 int main()
 {
@@ -63,7 +66,10 @@ int main()
         return -1;
 
     // Write log info
-    jkscLog::Info("This is a info log with %s", "formatted strings");
+    jkscLog::Info("This is an info log with %s", "formatted strings");
+    
+    // Write log debug
+    jkscLog::Debug("This is a debug log with %s with color %s written in %d", "formatted strings", "green", 2021);
 
     // Write log warning
     jkscLog::Warn("This is a warning log in %d", 2020 + 1);
