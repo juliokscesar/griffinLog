@@ -83,8 +83,8 @@ namespace jkscLog
         std::string modes[] = { "INFO", "DEBUG", "WARN", "CRITICAL" };
         std::string colors[] = { ANSI_COLOR_BLUE, ANSI_COLOR_GREEN, ANSI_COLOR_YELLOW, ANSI_COLOR_RED };
 
-        logFile << "[" << GetDateTimeNow() << "] [" << modes[(int)logMode] << "] " << log << "\n";
-        std::cout << "[" << GetDateTimeNow() << "] " << colors[(int)logMode] << "[" << modes[(int)logMode] << "] " << ANSI_COLOR_RESET  << log << "\n";
+        logFile << "[" << GetDateTimeNow() << "] [" << modes[logMode] << "] " << log << "\n";
+        std::cout << "[" << GetDateTimeNow() << "] " << colors[logMode] << "[" << modes[logMode] << "] " << ANSI_COLOR_RESET  << log << "\n";
     }
 
     void Info(const std::string &logInfo, ...)

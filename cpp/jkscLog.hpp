@@ -42,7 +42,7 @@ SOFTWARE.
 
 namespace jkscLog
 {
-    enum class LogMode
+    enum LogMode
     {
         INFO     = 0,
 	    DEBUG    = 1,
