@@ -80,38 +80,11 @@ namespace jkscLog
     {
         ASSERT_LOG_INIT();
 
-        std::string mode;
-        std::string colorMode;
+        std::string modes[] = { "INFO", "DEBUG", "WARN", "CRITICAL" };
+        std::string colors[] = { ANSI_COLOR_BLUE, ANSI_COLOR_GREEN, ANSI_COLOR_YELLOW, ANSI_COLOR_RED };
 
-        switch (logMode)
-        {
-            case LogMode::INFO:
-                mode = "INFO";
-                colorMode = ANSI_COLOR_BLUE;
-                break;
-	   
-	        case LogMode::DEBUG:
-		        mode = "DEBUG";
-		        colorMode = ANSI_COLOR_GREEN;
-		        break;
-
-            case LogMode::WARN:
-                mode = "WARN";
-                colorMode = ANSI_COLOR_YELLOW;
-                break;
-
-            case LogMode::CRITICAL:
-                mode = "CRITICAL";
-                colorMode = ANSI_COLOR_RED;
-                break;
-
-            default:
-                throw std::runtime_error("Invalid log mode\n");
-                break;
-        }
-
-        logFile << "[" << GetDateTimeNow() << "] [" << mode << "] " << log << "\n";
-        std::cout << "[" << GetDateTimeNow() << "] " << colorMode << "[" << mode << "] " << ANSI_COLOR_RESET  << log << "\n";
+        logFile << "[" << GetDateTimeNow() << "] [" << modes[(int)logMode] << "] " << log << "\n";
+        std::cout << "[" << GetDateTimeNow() << "] " << colors[(int)logMode] << "[" << modes[(int)logMode] << "] " << ANSI_COLOR_RESET  << log << "\n";
     }
 
     void Info(const std::string &logInfo, ...)

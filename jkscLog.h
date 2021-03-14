@@ -39,13 +39,13 @@ SOFTWARE.
 #include <string.h>
 #include <time.h>
 
-typedef enum
+enum LogMode
 {
     INFO     = 0,
     DEBUG    = 1,
     WARN     = 2,
     CRITICAL = 3
-} LogMode;
+};
 
 int jkscLogInit();
 int jkscLogInitCustom(const char* fileName);

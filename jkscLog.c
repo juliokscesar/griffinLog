@@ -72,39 +72,13 @@ void jkscLogWriteMode(int logMode, char *log)
         return;
 
     char *dateTime = GetCurrentDateTime();
-    char mode[9];
-    char modeColor[23];
+    
+    char *modes[] = { "INFO", "DEBUG", "WARN", "CRITICAL" };
+    char *colors[] = { ANSI_COLOR_BLUE, ANSI_COLOR_GREEN, ANSI_COLOR_YELLOW, ANSI_COLOR_RED };
 
-    switch (logMode)
-    {
-        case INFO:
-            strcpy(mode, "INFO");
-            strcpy(modeColor, ANSI_COLOR_BLUE);
-            break;
-	
-    	case DEBUG:
-	    strcpy(mode, "DEBUG");
-	    strcpy(modeColor, ANSI_COLOR_GREEN);
-	    break;	    
+    fprintf(logFile, "[%s] [%s] %s\n", dateTime, modes[logMode], log);
 
-        case WARN:
-            strcpy(mode, "WARN");
-            strcpy(modeColor, ANSI_COLOR_YELLOW);
-            break;
-        
-        case CRITICAL:
-            strcpy(mode, "CRITICAL");
-            strcpy(modeColor, ANSI_COLOR_RED);
-            break;
-
-        default:
-            fprintf(stderr, "Invalid log mode\n");
-            return;
-    }
-
-    fprintf(logFile, "[%s] [%s] %s\n", dateTime, mode, log);
-
-    printf("[%s] [%s%s%s] %s\n", dateTime, modeColor, mode, ANSI_COLOR_RESET, log);
+    printf("[%s] [%s%s%s] %s\n", dateTime, colors[logMode], modes[logMode], ANSI_COLOR_RESET, log);
 
     free(dateTime);
     free(log);
