@@ -84,7 +84,7 @@ namespace jkscLog
         std::string colors[] = { ANSI_COLOR_BLUE, ANSI_COLOR_GREEN, ANSI_COLOR_YELLOW, ANSI_COLOR_RED };
 
         logFile << "[" << GetDateTimeNow() << "] [" << modes[logMode] << "] " << log << "\n";
-        std::cout << "[" << GetDateTimeNow() << "] " << colors[logMode] << "[" << modes[logMode] << "] " << ANSI_COLOR_RESET  << log << "\n";
+        std::cout << "[" << GetDateTimeNow() << "] [" << colors[logMode] << modes[logMode] << ANSI_COLOR_RESET << "] " << log << "\n";
     }
 
     void Info(const std::string &logInfo, ...)
@@ -103,16 +103,16 @@ namespace jkscLog
 
     void Debug(const std::string &logDebug, ...)
     {
-	va_list args;
-	va_start(args, logDebug);
+	    va_list args;
+	    va_start(args, logDebug);
 
-	char *log = new char[logDebug.size() + 256];
-	vsnprintf(log, logDebug.size() + 255, logDebug.c_str(), args);
+	    char *log = new char[logDebug.size() + 256];
+	    vsnprintf(log, logDebug.size() + 255, logDebug.c_str(), args);
 
-	LogWriteMode(LogMode::DEBUG, log);
+	    LogWriteMode(LogMode::DEBUG, log);
 
-	delete[] log;
-	va_end(args);
+	    delete[] log;
+	    va_end(args);
     }    
 
     void Warn(const std::string &logWarn, ...)

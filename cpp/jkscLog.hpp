@@ -22,8 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef LOG_H
-#define LOG_H
+#ifndef JKSCLOG_H
+#define JKSCLOG_H
 
 #define ANSI_COLOR_RED     "\x1b[31;1;1m"
 #define ANSI_COLOR_GREEN   "\x1b[32;1;1m"
@@ -64,4 +64,4 @@ namespace jkscLog
     const std::string GetDateTimeNow();
 }
 
-#endif // LOG_H
+#endif // JKSCLOG_H
