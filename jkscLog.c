@@ -26,6 +26,21 @@ SOFTWARE.
 
 #if defined(WIN32) || defined(_WIN32)
 #include <windows.h>
+
+void SetConsoleColor(WORD* Attributes, DWORD Color)
+{
+    CONSOLE_SCREEN_BUFFER_INFO Info;
+    HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
+    GetConsoleScreenBufferInfo(hStdout, &Info);
+    *Attributes = Info.wAttributes;
+    SetConsoleTextAttribute(hStdout, Color);
+}
+
+void ResetConsoleColor(WORD Attributes)
+{
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), Attributes);
+}
+
 #endif
 
 static FILE *logFile;
@@ -72,16 +87,42 @@ void jkscLogWriteMode(int logMode, char *log)
         return;
 
     char *dateTime = GetCurrentDateTime();
-    
     char *modes[] = { "INFO", "DEBUG", "WARN", "CRITICAL" };
-    char *colors[] = { ANSI_COLOR_BLUE, ANSI_COLOR_GREEN, ANSI_COLOR_YELLOW, ANSI_COLOR_RED };
 
     fprintf(logFile, "[%s] [%s] %s\n", dateTime, modes[logMode], log);
-
-    printf("[%s] [%s%s%s] %s\n", dateTime, colors[logMode], modes[logMode], ANSI_COLOR_RESET, log);
+    jkscLogWriteModeConsole(logMode, log);
 
     free(dateTime);
     free(log);
+}
+
+void jkscLogWriteModeConsole(int logMode, char *log)
+{
+    char *dateTime = GetCurrentDateTime();
+    char *modes[] = { "INFO", "DEBUG", "WARN", "CRITICAL" };
+
+    #if defined(WIN32) || defined(_WIN32)
+
+    DWORD colors[] = { COLOR_BLUE, COLOR_GREEN, COLOR_YELLOW, COLOR_RED };
+
+    WORD attributes;
+
+    printf("[%s] [", dateTime);
+ 
+    SetConsoleColor(&attributes, colors[logMode]);
+    printf("%s", modes[logMode]);
+    ResetConsoleColor(attributes);
+
+    printf("] %s\n", log);
+
+    #else
+
+    char *colors[] = { COLOR_BLUE, COLOR_GREEN, COLOR_YELLOW, COLOR_RED };
+    printf("[%s] [%s%s%s] %s\n", dateTime, colors[logMode], modes[logMode], COLOR_RESET, log);
+
+    #endif // WIN32 || _WIN32
+
+    free(dateTime);
 }
 
 void jkscLogInfo(const char *logInfo, ...)

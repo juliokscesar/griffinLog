@@ -31,11 +31,27 @@ SOFTWARE.
 #include <sstream>
 #include <stdexcept>
 
+#define ASSERT_LOG_INIT() if (!logFile.is_open()) throw std::runtime_error(std::string(__FILE__) + ":" + std::to_string(__LINE__) + " LOG WAS NOT INITIATED")
+
 #if defined(WIN32) || defined(_WIN32)
 #include <windows.h>
-#endif
 
-#define ASSERT_LOG_INIT() if (!logFile.is_open()) throw std::runtime_error(std::string(__FILE__) + ":" + std::to_string(__LINE__) + " LOG WAS NOT INITIATED")
+void SetConsoleColor(WORD* Attributes, DWORD Color)
+{
+    CONSOLE_SCREEN_BUFFER_INFO Info;
+    HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
+    GetConsoleScreenBufferInfo(hStdout, &Info);
+    *Attributes = Info.wAttributes;
+    SetConsoleTextAttribute(hStdout, Color);
+}
+
+void ResetConsoleColor(WORD Attributes)
+{
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), Attributes);
+}
+
+#endif // WIN32 || _WIN32
+
 
 namespace jkscLog
 {
@@ -78,11 +94,38 @@ namespace jkscLog
     {
         ASSERT_LOG_INIT();
 
+        const std::string dateTime = GetDateTimeNow();
         std::string modes[] = { "INFO", "DEBUG", "WARN", "CRITICAL" };
-        std::string colors[] = { ANSI_COLOR_BLUE, ANSI_COLOR_GREEN, ANSI_COLOR_YELLOW, ANSI_COLOR_RED };
 
-        logFile << "[" << GetDateTimeNow() << "] [" << modes[logMode] << "] " << log << "\n";
-        std::cout << "[" << GetDateTimeNow() << "] [" << colors[logMode] << modes[logMode] << ANSI_COLOR_RESET << "] " << log << "\n";
+        logFile << "[" << dateTime << "] [" << modes[logMode] << "] " << log << "\n";
+        LogWriteModeConsole(logMode, log);
+    }
+
+    void LogWriteModeConsole(LogMode logMode, const std::string &log)
+    {
+        const std::string dateTime = GetDateTimeNow();
+        std::string modes[] = { "INFO", "DEBUG", "WARN", "CRITICAL" };
+
+        #if defined(WIN32) || defined (_WIN32)
+
+        DWORD colors[] = { COLOR_BLUE, COLOR_GREEN, COLOR_YELLOW, COLOR_RED };
+        
+        WORD attributes;
+
+        std::cout << "[" << dateTime << "] [";
+
+        SetConsoleColor(&attributes, colors[logMode]);
+        std::cout << modes[logMode];
+        ResetConsoleColor(attributes);
+
+        std::cout << "] " << log << "\n";
+
+        #else
+
+        std::string colors[] = { COLOR_BLUE, COLOR_GREEN, COLOR_YELLOW, COLOR_RED };
+        std::cout << "[" << dateTime << "] [" << colors[logMode] << modes[logMode] << COLOR_RESET << "] " << log << "\n";
+
+        #endif // WIN32 _WIN32
     }
 
     void Info(const std::string &logInfo, ...)

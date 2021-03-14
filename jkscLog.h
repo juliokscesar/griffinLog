@@ -25,13 +25,18 @@ SOFTWARE.
 #ifndef JKSCLOG_H
 #define JKSCLOG_H
 
-#define ANSI_COLOR_RED     "\x1b[31;1;1m"
-#define ANSI_COLOR_GREEN   "\x1b[32;1;1m"
-#define ANSI_COLOR_YELLOW  "\x1b[38;2;255;255;1;1m"
-#define ANSI_COLOR_BLUE    "\x1b[34;1;1m"
-#define ANSI_COLOR_MAGENTA "\x1b[35;1;1m"
-#define ANSI_COLOR_CYAN    "\x1b[36;1;1m"
-#define ANSI_COLOR_RESET   "\x1b[0m"
+#if defined(WIN32) || defined(_WIN32)
+    #define COLOR_RED       0x0c
+    #define COLOR_GREEN     0x0a
+    #define COLOR_BLUE      0x09
+    #define COLOR_YELLOW    0x0e
+#else
+    #define COLOR_RED     "\x1b[31;1;1m"
+    #define COLOR_GREEN   "\x1b[32;1;1m"
+    #define COLOR_BLUE    "\x1b[34;1;1m"
+    #define COLOR_YELLOW  "\x1b[38;2;255;255;1;1m"
+    #define COLOR_RESET   "\x1b[0m"
+#endif // WIN32 || _WIN32
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -51,6 +56,8 @@ int jkscLogInit();
 int jkscLogInitCustom(const char* fileName);
 
 void jkscLogWriteMode(int logMode, char *log);
+void jkscLogWriteModeConsole(int logMode, char *log);
+
 void jkscLogInfo(const char *logInfo, ...);
 void jkscLogDebug(const char *logDebug, ...);
 void jkscLogWarn(const char *logWarn, ...);
