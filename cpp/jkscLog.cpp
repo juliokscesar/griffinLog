@@ -59,7 +59,6 @@ namespace jkscLog
         }
 
         Info("Log Initiated");
-
         return logFile.is_open();
     }
 
@@ -72,7 +71,6 @@ namespace jkscLog
         }
 
         Info("Log Initiated");
-
         return logFile.is_open();
     }
 
