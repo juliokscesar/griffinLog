@@ -64,21 +64,21 @@ enum LogMode
     CRITICAL = 3
 };
 
-int jkscLogInit();
-int jkscLogInitCustom(const char* fileName);
+int JKSCLOG_API_C jkscLogInit();
+int JKSCLOG_API_C jkscLogInitCustom(const char* fileName);
 
-void jkscLogWriteMode(int logMode, char *log);
-void jkscLogWriteModeConsole(int logMode, const char *modes[], const char *log, const char *dateTime);
-void jkscLogWriteModeFile(int logMode, const char *modes[], const char *log, const char *dateTime);
+void JKSCLOG_API_C jkscLogWriteMode(int logMode, char *log);
+void JKSCLOG_API_C jkscLogWriteModeConsole(int logMode, const char *modes[], const char *log, const char *dateTime);
+void JKSCLOG_API_C jkscLogWriteModeFile(int logMode, const char *modes[], const char *log, const char *dateTime);
 
-void jkscLogInfo(const char *logInfo, ...);
-void jkscLogDebug(const char *logDebug, ...);
-void jkscLogWarn(const char *logWarn, ...);
-void jkscLogCritical(const char *logCritical, ...);
+void JKSCLOG_API_C jkscLogInfo(const char *logInfo, ...);
+void JKSCLOG_API_C jkscLogDebug(const char *logDebug, ...);
+void JKSCLOG_API_C jkscLogWarn(const char *logWarn, ...);
+void JKSCLOG_API_C jkscLogCritical(const char *logCritical, ...);
 
-int jkscLogFinish();
+int JKSCLOG_API_C jkscLogFinish();
 
-char *GetCurrentDateTime();
+char* JKSCLOG_API_C GetCurrentDateTime();
 
 #ifdef __cplusplus
 }
