@@ -30,6 +30,12 @@ SOFTWARE.
     #define COLOR_GREEN     0x0a
     #define COLOR_BLUE      0x09
     #define COLOR_YELLOW    0x0e
+
+    #ifdef _MSC_VER
+        #ifndef _CRT_SECURE_NO_WARNINGS
+            #error _CRT_SECURE_NO_WARNINGS not defined
+        #endif // !_CRT_SECURE_NO_WARNINGS
+    #endif // _MSC_VER
 #else
     #define COLOR_RED     "\x1b[31;1;1m"
     #define COLOR_GREEN   "\x1b[32;1;1m"
