@@ -56,7 +56,7 @@ void createLogDir()
     #endif
 }
 
-int jkscLogInit()
+int JKSCLOG_API_C jkscLogInit()
 {
     if (!logFile)
     {
@@ -68,7 +68,7 @@ int jkscLogInit()
     return !(logFile == NULL);
 }
 
-int jkscLogInitCustom(const char* fileName)
+int JKSCLOG_API_C jkscLogInitCustom(const char* fileName)
 {
     char filePath[256] = "logs/";
     strncat(filePath, fileName, 255);
@@ -83,7 +83,7 @@ int jkscLogInitCustom(const char* fileName)
     return !(logFile == NULL);
 }
 
-void jkscLogWriteMode(int logMode, char *log)
+void JKSCLOG_API_C jkscLogWriteMode(int logMode, char *log)
 {
     ASSERT_LOG_INIT();
 
@@ -97,7 +97,7 @@ void jkscLogWriteMode(int logMode, char *log)
     free(log);
 }
 
-void jkscLogWriteModeConsole(int logMode, const char *modes[], const char *log, const char *dateTime)
+void JKSCLOG_API_C jkscLogWriteModeConsole(int logMode, const char *modes[], const char *log, const char *dateTime)
 {
     #if defined(WIN32) || defined(_WIN32)
 
@@ -121,12 +121,12 @@ void jkscLogWriteModeConsole(int logMode, const char *modes[], const char *log, 
     #endif // WIN32 || _WIN32
 }
 
-void jkscLogWriteModeFile(int logMode, const char *modes[], const char *log, const char *dateTime)
+void JKSCLOG_API_C jkscLogWriteModeFile(int logMode, const char *modes[], const char *log, const char *dateTime)
 {
     fprintf(logFile, "[%s] [%s] %s\n", dateTime, modes[logMode], log);
 }
 
-void jkscLogInfo(const char *logInfo, ...)
+void JKSCLOG_API_C jkscLogInfo(const char *logInfo, ...)
 {
     va_list args;
     va_start(args, logInfo);
@@ -141,7 +141,7 @@ void jkscLogInfo(const char *logInfo, ...)
     va_end(args);
 }
 
-void jkscLogDebug(const char *logDebug, ...)
+void JKSCLOG_API_C jkscLogDebug(const char *logDebug, ...)
 {
 	va_list args;
 	va_start(args, logDebug);
@@ -156,7 +156,7 @@ void jkscLogDebug(const char *logDebug, ...)
 	va_end(args);
 }
 
-void jkscLogWarn(const char *logWarn, ...)
+void JKSCLOG_API_C jkscLogWarn(const char *logWarn, ...)
 {
     va_list args;
     va_start(args, logWarn);
@@ -171,7 +171,7 @@ void jkscLogWarn(const char *logWarn, ...)
     va_end(args);
 }
 
-void jkscLogCritical(const char *logCritical, ...)
+void JKSCLOG_API_C jkscLogCritical(const char *logCritical, ...)
 {
     va_list args;
     va_start(args, logCritical);
@@ -186,7 +186,7 @@ void jkscLogCritical(const char *logCritical, ...)
     va_end(args);
 }
 
-int jkscLogFinish()
+int JKSCLOG_API_C jkscLogFinish()
 {
     jkscLogInfo("Log Finished");
     
@@ -196,7 +196,7 @@ int jkscLogFinish()
     return (logFile == NULL);
 }
 
-char *GetCurrentDateTime()
+char* JKSCLOG_API_C GetCurrentDateTime()
 {
     time_t t = time(0);
     struct tm *now = localtime(&t);

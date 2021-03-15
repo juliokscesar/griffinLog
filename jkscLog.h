@@ -25,6 +25,8 @@ SOFTWARE.
 #ifndef JKSCLOG_H
 #define JKSCLOG_H
 
+#define JKSCLOG_API_C __cdecl
+
 #if defined(WIN32) || defined(_WIN32)
     #define COLOR_RED       0x0c
     #define COLOR_GREEN     0x0a
@@ -43,6 +45,10 @@ SOFTWARE.
     #define COLOR_YELLOW  "\x1b[38;2;255;255;1;1m"
     #define COLOR_RESET   "\x1b[0m"
 #endif // WIN32 || _WIN32
+
+#ifdef __cplusplus
+extern "C" {
+#endif // __cplusplus
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -73,5 +79,9 @@ void jkscLogCritical(const char *logCritical, ...);
 int jkscLogFinish();
 
 char *GetCurrentDateTime();
+
+#ifdef __cplusplus
+}
+#endif // __cplusplus
 
 #endif // JKSCLOG_H
