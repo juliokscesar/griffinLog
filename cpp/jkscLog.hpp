@@ -48,6 +48,8 @@ SOFTWARE.
     #define COLOR_RESET   "\x1b[0m"
 #endif // WIN32 || _WIN32
 
+// TODO: Refactor the whole C++ code beacause can't format %s with std::string
+
 namespace jkscLog
 {
     enum LogMode

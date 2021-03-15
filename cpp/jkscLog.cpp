@@ -29,6 +29,8 @@ SOFTWARE.
 #include <string>
 #include <ctime>
 
+// TODO: Refactor the whole C++ code beacause can't format %s with std::string
+
 #define ASSERT_LOG_INIT() if (!logFile.is_open()) return
 
 #if defined(WIN32) || defined(_WIN32)
