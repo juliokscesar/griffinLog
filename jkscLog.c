@@ -24,8 +24,10 @@ SOFTWARE.
 
 #include "jkscLog.h"
 
+#define ASSERT_LOG_INIT() if (!logFile) return
+
 #if defined(WIN32) || defined(_WIN32)
-#include <windows.h>
+#include <Windows.h>
 
 void SetConsoleColor(WORD* Attributes, DWORD Color)
 {
@@ -83,32 +85,27 @@ int jkscLogInitCustom(const char* fileName)
 
 void jkscLogWriteMode(int logMode, char *log)
 {
-    if (!logFile)
-        return;
+    ASSERT_LOG_INIT();
 
     char *dateTime = GetCurrentDateTime();
-    char *modes[] = { "INFO", "DEBUG", "WARN", "CRITICAL" };
+    const char *modes[] = { "INFO", "DEBUG", "WARN", "CRITICAL" };
 
-    fprintf(logFile, "[%s] [%s] %s\n", dateTime, modes[logMode], log);
-    jkscLogWriteModeConsole(logMode, log);
+    jkscLogWriteModeConsole(logMode, modes, log, dateTime);
+    jkscLogWriteModeFile(logMode, modes, log, dateTime);
 
     free(dateTime);
     free(log);
 }
 
-void jkscLogWriteModeConsole(int logMode, char *log)
+void jkscLogWriteModeConsole(int logMode, const char *modes[], const char *log, const char *dateTime)
 {
-    char *dateTime = GetCurrentDateTime();
-    char *modes[] = { "INFO", "DEBUG", "WARN", "CRITICAL" };
-
     #if defined(WIN32) || defined(_WIN32)
 
-    DWORD colors[] = { COLOR_BLUE, COLOR_GREEN, COLOR_YELLOW, COLOR_RED };
-
-    WORD attributes;
+    const DWORD colors[] = { COLOR_BLUE, COLOR_GREEN, COLOR_YELLOW, COLOR_RED };
 
     printf("[%s] [", dateTime);
- 
+
+    WORD attributes;
     SetConsoleColor(&attributes, colors[logMode]);
     printf("%s", modes[logMode]);
     ResetConsoleColor(attributes);
@@ -117,12 +114,16 @@ void jkscLogWriteModeConsole(int logMode, char *log)
 
     #else
 
-    char *colors[] = { COLOR_BLUE, COLOR_GREEN, COLOR_YELLOW, COLOR_RED };
+    const char *colors[] = { COLOR_BLUE, COLOR_GREEN, COLOR_YELLOW, COLOR_RED };
+
     printf("[%s] [%s%s%s] %s\n", dateTime, colors[logMode], modes[logMode], COLOR_RESET, log);
 
     #endif // WIN32 || _WIN32
+}
 
-    free(dateTime);
+void jkscLogWriteModeFile(int logMode, const char *modes[], const char *log, const char *dateTime)
+{
+    fprintf(logFile, "[%s] [%s] %s\n", dateTime, modes[logMode], log);
 }
 
 void jkscLogInfo(const char *logInfo, ...)

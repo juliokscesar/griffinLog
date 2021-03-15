@@ -56,7 +56,8 @@ int jkscLogInit();
 int jkscLogInitCustom(const char* fileName);
 
 void jkscLogWriteMode(int logMode, char *log);
-void jkscLogWriteModeConsole(int logMode, char *log);
+void jkscLogWriteModeConsole(int logMode, const char *modes[], const char *log, const char *dateTime);
+void jkscLogWriteModeFile(int logMode, const char *modes[], const char *log, const char *dateTime);
 
 void jkscLogInfo(const char *logInfo, ...);
 void jkscLogDebug(const char *logDebug, ...);

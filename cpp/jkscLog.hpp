@@ -25,6 +25,10 @@ SOFTWARE.
 #ifndef JKSCLOG_H
 #define JKSCLOG_H
 
+#include <iostream>
+#include <string>
+#include <cstdarg>
+
 #if defined(WIN32) || defined(_WIN32)
     #define COLOR_RED       0x0c
     #define COLOR_GREEN     0x0a
@@ -37,13 +41,6 @@ SOFTWARE.
     #define COLOR_YELLOW  "\x1b[38;2;255;255;1;1m"
     #define COLOR_RESET   "\x1b[0m"
 #endif // WIN32 || _WIN32
-
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <cstdarg>
-#include <cstdio>
-#include <exception>
 
 namespace jkscLog
 {
@@ -59,7 +56,8 @@ namespace jkscLog
     bool Init(const std::string &logFileName);
 
     void LogWriteMode(LogMode logMode, const std::string &log);
-    void LogWriteModeConsole(LogMode logMode, const std::string &log);
+    void LogWriteModeConsole(LogMode logMode, const std::string modes[], const std::string &log, const std::string &dateTime);
+    void LogWriteModeFile(LogMode logMode, const std::string modes[], const std::string &log, const std::string &dateTime);
 
     void Info(const std::string &logInfo, ...);
     void Debug(const std::string &logDebug, ...);
