@@ -24,21 +24,21 @@ SOFTWARE.
 
 /*
 Compile With:
-g++ -o benchmark benchmark.c ../jkscLog.h
+gcc -o benchmark benchmark.c ../jkscLog.c
 */
 
 #include <stdio.h>
 
-#ifdef _WIN32
+#if defined(WIN32) || defined(_WIN32)
 
-#include <windows.h>
+#include <Windows.h>
 
 #else
 
 #include <sys/time.h>
 #include <sys/resource.h>
 
-#endif // _WIN32
+#endif // WIN32 || _WIN32
 
 #include "../jkscLog.h"
 
