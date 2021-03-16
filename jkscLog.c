@@ -201,7 +201,7 @@ char* JKSCLOG_API_C GetCurrentDateTime()
     time_t t = time(0);
     struct tm *now = localtime(&t);
 
-    char *dateTime = malloc(sizeof(char) * 20);
+    char *dateTime = calloc(20, sizeof(char));
     strftime(dateTime, 20, "%Y-%m-%d %H:%M:%S", now);
 
     return dateTime;
