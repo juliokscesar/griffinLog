@@ -25,20 +25,28 @@ SOFTWARE.
 #ifndef JKSCLOG_H
 #define JKSCLOG_H
 
-#define JKSCLOG_API_C __cdecl
+/* JKSCLOG_API_C DEFINITION */
+#if defined(__GNUC__) || defined(__GNUG__) || defined(__clang__)
+    #define JKSCLOG_API_C __attribute__ ((__cdecl__))
+#elif defined(_MSC_VER) || (defined(__MINGW32__) || defined(__MINGW64__))
+    #define JKSCLOG_API_C __cdecl
+#endif // __GNUC__ || __GNUG__
 
+/* MUST DEFINE _CRT_SECURE_NO_WARNINGS ON MSC (VISUAL STUDIO) */
+#ifdef _MSC_VER
+    #ifndef _CRT_SECURE_NO_WARNINGS
+        #error _CRT_SECURE_NO_WARNINGS not defined
+    #endif // !_CRT_SECURE_NO_WARNINGS
+#endif // _MSC_VER
+
+/* PLATFORM SPECIFIC CONSOLE COLOR DEFINITION */
 #if defined(WIN32) || defined(_WIN32)
     #define COLOR_RED       0x0c
     #define COLOR_GREEN     0x0a
     #define COLOR_BLUE      0x09
     #define COLOR_YELLOW    0x0e
-
-    #ifdef _MSC_VER
-        #ifndef _CRT_SECURE_NO_WARNINGS
-            #error _CRT_SECURE_NO_WARNINGS not defined
-        #endif // !_CRT_SECURE_NO_WARNINGS
-    #endif // _MSC_VER
 #else
+    // ANSI escape sequences for UNIX systems
     #define COLOR_RED     "\x1b[31;1;1m"
     #define COLOR_GREEN   "\x1b[32;1;1m"
     #define COLOR_BLUE    "\x1b[34;1;1m"

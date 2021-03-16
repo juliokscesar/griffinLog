@@ -43,7 +43,7 @@ void ResetConsoleColor(WORD Attributes)
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), Attributes);
 }
 
-#endif
+#endif // WIN32 || _WIN32
 
 static FILE *logFile;
 
@@ -53,7 +53,7 @@ void createLogDir()
     CreateDirectoryA("logs", NULL);
     #else
     system("mkdir -p ./logs");
-    #endif
+    #endif // WIN32 || _WIN32
 }
 
 int JKSCLOG_API_C jkscLogInit()
