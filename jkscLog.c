@@ -45,7 +45,16 @@ void ResetConsoleColor(WORD Attributes)
 
 #endif // WIN32 || _WIN32
 
+#if defined(WIN32) || defined(_WIN32)
+    typedef DWORD COLOR_ARRAY;
+#else
+    typedef char* COLOR_ARRAY;
+#endif // WIN32 || _WIN32
+
 static FILE *logFile;
+
+static const char *modes[] = { "INFO", "DEBUG", "WARN", "CRITICAL", "FATAL" };
+static const COLOR_ARRAY colors[] = { COLOR_BLUE, COLOR_GREEN, COLOR_YELLOW, COLOR_RED, COLOR_BLACK_RED };
 
 void createLogDir()
 {
@@ -77,20 +86,17 @@ void JKSCLOG_API_C jkscLogWriteMode(int logMode, char *log)
     ASSERT_LOG_INIT();
 
     char *dateTime = GetCurrentDateTime();
-    const char *modes[] = { "INFO", "DEBUG", "WARN", "CRITICAL", "FATAL" };
 
-    jkscLogWriteModeConsole(logMode, modes, log, dateTime);
-    jkscLogWriteModeFile(logMode, modes, log, dateTime);
+    jkscLogWriteModeConsole(logMode, log, dateTime);
+    jkscLogWriteModeFile(logMode, log, dateTime);
 
     free(dateTime);
     free(log);
 }
 
-void JKSCLOG_API_C jkscLogWriteModeConsole(int logMode, const char *modes[], const char *log, const char *dateTime)
+void JKSCLOG_API_C jkscLogWriteModeConsole(int logMode, const char *log, const char *dateTime)
 {
     #if defined(WIN32) || defined(_WIN32)
-
-    const DWORD colors[] = { COLOR_BLUE, COLOR_GREEN, COLOR_YELLOW, COLOR_RED, COLOR_BLACK_RED };
 
     printf("[%s] [", dateTime);
 
@@ -103,14 +109,12 @@ void JKSCLOG_API_C jkscLogWriteModeConsole(int logMode, const char *modes[], con
 
     #else
 
-    const char *colors[] = { COLOR_BLUE, COLOR_GREEN, COLOR_YELLOW, COLOR_RED, COLOR_BLACK_RED };
-
     printf("[%s] [%s%s%s] %s\n", dateTime, colors[logMode], modes[logMode], COLOR_RESET, log);
 
     #endif // WIN32 || _WIN32
 }
 
-void JKSCLOG_API_C jkscLogWriteModeFile(int logMode, const char *modes[], const char *log, const char *dateTime)
+void JKSCLOG_API_C jkscLogWriteModeFile(int logMode, const char *log, const char *dateTime)
 {
     fprintf(logFile, "[%s] [%s] %s\n", dateTime, modes[logMode], log);
 }

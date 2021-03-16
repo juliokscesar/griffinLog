@@ -61,7 +61,8 @@
         "memory_resource": "cpp",
         "optional": "cpp",
         "string_view": "cpp",
-        "bit": "cpp"
+        "bit": "cpp",
+        "windows.h": "c"
     },
     "cSpell.words": [
         "jksc",

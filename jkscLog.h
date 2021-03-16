@@ -78,8 +78,8 @@ enum LogMode
 int JKSCLOG_API_C jkscLogInit(const char *logFileName);
 
 void JKSCLOG_API_C jkscLogWriteMode(int logMode, char *log);
-void JKSCLOG_API_C jkscLogWriteModeConsole(int logMode, const char *modes[], const char *log, const char *dateTime);
-void JKSCLOG_API_C jkscLogWriteModeFile(int logMode, const char *modes[], const char *log, const char *dateTime);
+void JKSCLOG_API_C jkscLogWriteModeConsole(int logMode, const char *log, const char *dateTime);
+void JKSCLOG_API_C jkscLogWriteModeFile(int logMode, const char *log, const char *dateTime);
 
 void JKSCLOG_API_C jkscLogInfo(const char *logInfo, ...);
 void JKSCLOG_API_C jkscLogDebug(const char *logDebug, ...);
