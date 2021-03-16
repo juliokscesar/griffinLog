@@ -56,30 +56,19 @@ void createLogDir()
     #endif // WIN32 || _WIN32
 }
 
-int JKSCLOG_API_C jkscLogInit()
+int JKSCLOG_API_C jkscLogInit(const char *logFileName)
 {
     if (!logFile)
     {
         createLogDir();
-        logFile = fopen("logs/logfile.log", "w");
+
+        char logFilePath[256] = "logs/";
+        strncat(logFilePath, logFileName, sizeof(logFilePath) - strlen(logFileName));
+
+        logFile = fopen(logFilePath, "w");
     }
 
     jkscLogInfo("Log Intiated");
-    return !(logFile == NULL);
-}
-
-int JKSCLOG_API_C jkscLogInitCustom(const char* fileName)
-{
-    char filePath[256] = "logs/";
-    strncat(filePath, fileName, 255);
-
-    if (!logFile)
-    {
-        createLogDir();
-        logFile = fopen(filePath, "w");
-    }
-
-    jkscLogInfo("Log Initiated");
     return !(logFile == NULL);
 }
 

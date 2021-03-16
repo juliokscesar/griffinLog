@@ -62,7 +62,7 @@ int main()
 {
     double start = get_time();
 
-    jkscLogInitCustom("benchmarking_log_C.log");
+    jkscLogInit("benchmarking_log_C.log");
 
     jkscLogInfo("Writing INFO to log");
     jkscLogWarn("Warning! Log warn benchmarking test");

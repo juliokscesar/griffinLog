@@ -31,12 +31,8 @@ gcc test_c.c ../jkscLog.c
 
 int main()
 {
-    // Initiate log with custom name
-    // if (!LogInitCustom("testlog.log"))
-        // return 1;
-
-    // Initiate log with default name (logfile.log)
-    if (!jkscLogInit())
+    // Initiate log with given file name
+    if (!jkscLogInit("testc_log.log"))
         return 1;
 
     // Info logging

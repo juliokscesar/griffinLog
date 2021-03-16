@@ -30,7 +30,7 @@ SOFTWARE.
     #define JKSCLOG_API_C __attribute__ ((__cdecl__))
 #elif defined(_MSC_VER) || (defined(__MINGW32__) || defined(__MINGW64__))
     #define JKSCLOG_API_C __cdecl
-#endif // __GNUC__ || __GNUG__
+#endif // __GNUC__ || __GNUG__ || __clang__
 
 /* MUST DEFINE _CRT_SECURE_NO_WARNINGS ON MSC (VISUAL STUDIO) */
 #ifdef _MSC_VER
@@ -72,8 +72,7 @@ enum LogMode
     CRITICAL = 3
 };
 
-int JKSCLOG_API_C jkscLogInit();
-int JKSCLOG_API_C jkscLogInitCustom(const char* fileName);
+int JKSCLOG_API_C jkscLogInit(const char *logFileName);
 
 void JKSCLOG_API_C jkscLogWriteMode(int logMode, char *log);
 void JKSCLOG_API_C jkscLogWriteModeConsole(int logMode, const char *modes[], const char *log, const char *dateTime);
