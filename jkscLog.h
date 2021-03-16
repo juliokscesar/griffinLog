@@ -45,13 +45,15 @@ SOFTWARE.
     #define COLOR_GREEN     0x0a
     #define COLOR_BLUE      0x09
     #define COLOR_YELLOW    0x0e
+    #define COLOR_BLACK_RED 0xc0
 #else
     // ANSI escape sequences for UNIX systems
-    #define COLOR_RED     "\x1b[31;1;1m"
-    #define COLOR_GREEN   "\x1b[32;1;1m"
-    #define COLOR_BLUE    "\x1b[34;1;1m"
-    #define COLOR_YELLOW  "\x1b[38;2;255;255;1;1m"
-    #define COLOR_RESET   "\x1b[0m"
+    #define COLOR_RED       "\x1b[31;1;1m"
+    #define COLOR_GREEN     "\x1b[32;1;1m"
+    #define COLOR_BLUE      "\x1b[34;1;1m"
+    #define COLOR_YELLOW    "\x1b[38;2;255;255;1;1m"
+    #define COLOR_BLACK_RED "\x1b[38;2;0;0;0;48;2;255;0;0;1;1m"
+    #define COLOR_RESET     "\x1b[0m"
 #endif // WIN32 || _WIN32
 
 #ifdef __cplusplus
@@ -69,7 +71,8 @@ enum LogMode
     INFO     = 0,
     DEBUG    = 1,
     WARN     = 2,
-    CRITICAL = 3
+    CRITICAL = 3,
+    FATAL    = 4
 };
 
 int JKSCLOG_API_C jkscLogInit(const char *logFileName);
@@ -82,6 +85,7 @@ void JKSCLOG_API_C jkscLogInfo(const char *logInfo, ...);
 void JKSCLOG_API_C jkscLogDebug(const char *logDebug, ...);
 void JKSCLOG_API_C jkscLogWarn(const char *logWarn, ...);
 void JKSCLOG_API_C jkscLogCritical(const char *logCritical, ...);
+void JKSCLOG_API_C jkscLogFatal(const char *logFatal, ...);
 
 int JKSCLOG_API_C jkscLogFinish();
 

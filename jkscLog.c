@@ -77,7 +77,7 @@ void JKSCLOG_API_C jkscLogWriteMode(int logMode, char *log)
     ASSERT_LOG_INIT();
 
     char *dateTime = GetCurrentDateTime();
-    const char *modes[] = { "INFO", "DEBUG", "WARN", "CRITICAL" };
+    const char *modes[] = { "INFO", "DEBUG", "WARN", "CRITICAL", "FATAL" };
 
     jkscLogWriteModeConsole(logMode, modes, log, dateTime);
     jkscLogWriteModeFile(logMode, modes, log, dateTime);
@@ -90,7 +90,7 @@ void JKSCLOG_API_C jkscLogWriteModeConsole(int logMode, const char *modes[], con
 {
     #if defined(WIN32) || defined(_WIN32)
 
-    const DWORD colors[] = { COLOR_BLUE, COLOR_GREEN, COLOR_YELLOW, COLOR_RED };
+    const DWORD colors[] = { COLOR_BLUE, COLOR_GREEN, COLOR_YELLOW, COLOR_RED, COLOR_BLACK_RED };
 
     printf("[%s] [", dateTime);
 
@@ -103,7 +103,7 @@ void JKSCLOG_API_C jkscLogWriteModeConsole(int logMode, const char *modes[], con
 
     #else
 
-    const char *colors[] = { COLOR_BLUE, COLOR_GREEN, COLOR_YELLOW, COLOR_RED };
+    const char *colors[] = { COLOR_BLUE, COLOR_GREEN, COLOR_YELLOW, COLOR_RED, COLOR_BLACK_RED };
 
     printf("[%s] [%s%s%s] %s\n", dateTime, colors[logMode], modes[logMode], COLOR_RESET, log);
 
@@ -171,6 +171,21 @@ void JKSCLOG_API_C jkscLogCritical(const char *logCritical, ...)
     vsnprintf(log, logSize - 1, logCritical, args);
 
     jkscLogWriteMode(CRITICAL, log);
+
+    va_end(args);
+}
+
+void JKSCLOG_API_C jkscLogFatal(const char *logFatal, ...)
+{
+    va_list args;
+    va_start(args, logFatal);
+
+    const int logSize = (int)strlen(logFatal) + 256;
+    char *log = malloc(sizeof(char) * logSize);
+
+    vsnprintf(log, logSize - 1, logFatal, args);
+
+    jkscLogWriteMode(FATAL, log);
 
     va_end(args);
 }

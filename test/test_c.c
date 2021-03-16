@@ -47,6 +47,9 @@ int main()
     // Critical logging
     jkscLogCritical("Critical error! Find out today in %d", 2021);
 
+    // Fatal logging
+    jkscLogFatal("Fatal error! Your pc will die, but it is %s", "just a joke");
+
     jkscLogFinish();
     return 0;
 }
