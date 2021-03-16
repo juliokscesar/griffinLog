@@ -67,5 +67,6 @@
     "cSpell.words": [
         "jksc",
         "juliokscesar"
-    ]
+    ],
+    "cmake.configureOnOpen": false
 }
