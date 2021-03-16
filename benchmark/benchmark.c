@@ -67,6 +67,7 @@ int main()
     jkscLogInfo("Writing INFO to log");
     jkscLogWarn("Warning! Log warn benchmarking test");
     jkscLogCritical("Testing critical log %s", "on benchmark.c");
+    jkscLogFatal("Writing fatal %s to log benchmarking", "message");
 
     jkscLogFinish();
 
