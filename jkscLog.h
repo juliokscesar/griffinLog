@@ -1,25 +1,25 @@
 /*
-MIT License
-
-Copyright (c) 2021 juliokscesar
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+* MIT License
+* 
+* Copyright (c) 2021 juliokscesar
+* 
+* Permission is hereby granted, free of charge, to any person obtaining a copy
+* of this software and associated documentation files (the "Software"), to deal
+* in the Software without restriction, including without limitation the rights
+* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+* copies of the Software, and to permit persons to whom the Software is
+* furnished to do so, subject to the following conditions:
+* 
+* The above copyright notice and this permission notice shall be included in all
+* copies or substantial portions of the Software.
+* 
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+* SOFTWARE.
 */
 
 #ifndef JKSCLOG_H
@@ -66,6 +66,12 @@ extern "C" {
 #include <string.h>
 #include <time.h>
 
+#define jkscLogInfo(...) jkscLogWriteMode(INFO, __VA_ARGS__)
+#define jkscLogDebug(...) jkscLogWriteMode(DEBUG, __VA_ARGS__)
+#define jkscLogWarn(...) jkscLogWriteMode(WARN, __VA_ARGS__)
+#define jkscLogCritical(...) jkscLogWriteMode(CRITICAL, __VA_ARGS__)
+#define jkscLogFatal(...) jkscLogWriteMode(FATAL, __VA_ARGS__)
+
 enum LogMode
 {
     INFO     = 0,
@@ -77,19 +83,9 @@ enum LogMode
 
 int JKSCLOG_API_C jkscLogInit(const char *logFileName);
 
-void JKSCLOG_API_C jkscLogWriteMode(int logMode, char *log);
-void JKSCLOG_API_C jkscLogWriteModeConsole(int logMode, const char *log, const char *dateTime);
-void JKSCLOG_API_C jkscLogWriteModeFile(int logMode, const char *log, const char *dateTime);
-
-void JKSCLOG_API_C jkscLogInfo(const char *logInfo, ...);
-void JKSCLOG_API_C jkscLogDebug(const char *logDebug, ...);
-void JKSCLOG_API_C jkscLogWarn(const char *logWarn, ...);
-void JKSCLOG_API_C jkscLogCritical(const char *logCritical, ...);
-void JKSCLOG_API_C jkscLogFatal(const char *logFatal, ...);
+void JKSCLOG_API_C jkscLogWriteMode(int logMode, char *logFmt, ...);
 
 int JKSCLOG_API_C jkscLogFinish();
-
-char* JKSCLOG_API_C GetCurrentDateTime();
 
 #ifdef __cplusplus
 }

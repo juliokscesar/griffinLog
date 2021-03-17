@@ -1,35 +1,52 @@
 /*
-MIT License
-
-Copyright (c) 2021 juliokscesar
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+* MIT License
+* 
+* Copyright (c) 2021 juliokscesar
+* 
+* Permission is hereby granted, free of charge, to any person obtaining a copy
+* of this software and associated documentation files (the "Software"), to deal
+* in the Software without restriction, including without limitation the rights
+* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+* copies of the Software, and to permit persons to whom the Software is
+* furnished to do so, subject to the following conditions:
+* 
+* The above copyright notice and this permission notice shall be included in all
+* copies or substantial portions of the Software.
+* 
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+* SOFTWARE.
 */
 
 #include "jkscLog.h"
 
-#define ASSERT_LOG_INIT() if (!logFile) return
+#define ASSERT_LOG_INIT_WRITING() if(!logFile) jkscLogErrorCallback(1)
+#define ASSERT_LOG_INIT_FINISHING() if (!logFile) jkscLogErrorCallback(-1)
+
+void JKSCLOG_API_C jkscLogErrorCallback(int err)
+{
+    switch (err)
+    {
+        case -1:
+            fprintf(stderr, "Log Error Callback code -1: Trying to finish not initiated log\n");
+            break;
+
+        case 1:
+            fprintf(stderr, "Log Error Callback code 1: Trying to write on not initiated log\n");
+            break;
+    }
+
+    exit(EXIT_FAILURE);
+}
 
 #if defined(WIN32) || defined(_WIN32)
 #include <Windows.h>
 
-void SetConsoleColor(WORD* Attributes, DWORD Color)
+void JKSCLOG_API_C SetConsoleColor(WORD* Attributes, DWORD Color)
 {
     CONSOLE_SCREEN_BUFFER_INFO Info;
     HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -38,7 +55,7 @@ void SetConsoleColor(WORD* Attributes, DWORD Color)
     SetConsoleTextAttribute(hStdout, Color);
 }
 
-void ResetConsoleColor(WORD Attributes)
+void JKSCLOG_API_C ResetConsoleColor(WORD Attributes)
 {
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), Attributes);
 }
@@ -56,13 +73,24 @@ static FILE *logFile;
 static const char *modes[] = { "INFO", "DEBUG", "WARN", "CRITICAL", "FATAL" };
 static const COLOR_ARRAY colors[] = { COLOR_BLUE, COLOR_GREEN, COLOR_YELLOW, COLOR_RED, COLOR_BLACK_RED };
 
-void createLogDir()
+void JKSCLOG_API_C createLogDir()
 {
     #if defined(WIN32) || defined(_WIN32)
     CreateDirectoryA("logs", NULL);
     #else
     system("mkdir -p ./logs");
     #endif // WIN32 || _WIN32
+}
+
+char* JKSCLOG_API_C GetCurrentDateTime()
+{
+    time_t t = time(0);
+    struct tm *now = localtime(&t);
+
+    char *dateTime = calloc(20, sizeof(char));
+    strftime(dateTime, 20, "%Y-%m-%d %H:%M:%S", now);
+
+    return dateTime;
 }
 
 int JKSCLOG_API_C jkscLogInit(const char *logFileName)
@@ -79,19 +107,6 @@ int JKSCLOG_API_C jkscLogInit(const char *logFileName)
 
     jkscLogInfo("Log Intiated");
     return !(logFile == NULL);
-}
-
-void JKSCLOG_API_C jkscLogWriteMode(int logMode, char *log)
-{
-    ASSERT_LOG_INIT();
-
-    char *dateTime = GetCurrentDateTime();
-
-    jkscLogWriteModeConsole(logMode, log, dateTime);
-    jkscLogWriteModeFile(logMode, log, dateTime);
-
-    free(dateTime);
-    free(log);
 }
 
 void JKSCLOG_API_C jkscLogWriteModeConsole(int logMode, const char *log, const char *dateTime)
@@ -119,98 +134,33 @@ void JKSCLOG_API_C jkscLogWriteModeFile(int logMode, const char *log, const char
     fprintf(logFile, "[%s] [%s] %s\n", dateTime, modes[logMode], log);
 }
 
-void JKSCLOG_API_C jkscLogInfo(const char *logInfo, ...)
+void JKSCLOG_API_C jkscLogWriteMode(int logMode, char *logFmt, ...)
 {
-    va_list args;
-    va_start(args, logInfo);
+    ASSERT_LOG_INIT_WRITING();
 
-    const int logSize = (int)strlen(logInfo) + 256;
+    const size_t logSize = strlen(logFmt) + 256;
     char *log = malloc(sizeof(char) * logSize);
 
-    vsnprintf(log, logSize - 1, logInfo, args);
+    va_list vaArgs;
+    va_start(vaArgs, logFmt);
+    vsnprintf(log, logSize - 1, logFmt, vaArgs);
+    va_end(vaArgs);
 
-    jkscLogWriteMode(INFO, log);
+    char *dateTime = GetCurrentDateTime();
 
-    va_end(args);
-}
+    jkscLogWriteModeConsole(logMode, log, dateTime);
+    jkscLogWriteModeFile(logMode, log, dateTime);
 
-void JKSCLOG_API_C jkscLogDebug(const char *logDebug, ...)
-{
-	va_list args;
-	va_start(args, logDebug);
-
-	const int logSize = (int)strlen(logDebug) + 256;
-	char *log = malloc(sizeof(char) * logSize);
-	
-	vsnprintf(log, logSize - 1, logDebug, args);
-
-	jkscLogWriteMode(DEBUG, log);
-
-	va_end(args);
-}
-
-void JKSCLOG_API_C jkscLogWarn(const char *logWarn, ...)
-{
-    va_list args;
-    va_start(args, logWarn);
-
-    const int logSize = (int)strlen(logWarn) + 256;
-    char *log = malloc(sizeof(char) * logSize);
-
-    vsnprintf(log, logSize - 1, logWarn, args);
-
-    jkscLogWriteMode(WARN, log);
-
-    va_end(args);
-}
-
-void JKSCLOG_API_C jkscLogCritical(const char *logCritical, ...)
-{
-    va_list args;
-    va_start(args, logCritical);
-
-    const int logSize = (int)strlen(logCritical) + 256;
-    char *log = malloc(sizeof(char) * logSize);
-
-    vsnprintf(log, logSize - 1, logCritical, args);
-
-    jkscLogWriteMode(CRITICAL, log);
-
-    va_end(args);
-}
-
-void JKSCLOG_API_C jkscLogFatal(const char *logFatal, ...)
-{
-    va_list args;
-    va_start(args, logFatal);
-
-    const int logSize = (int)strlen(logFatal) + 256;
-    char *log = malloc(sizeof(char) * logSize);
-
-    vsnprintf(log, logSize - 1, logFatal, args);
-
-    jkscLogWriteMode(FATAL, log);
-
-    va_end(args);
+    free(dateTime);
+    free(log);
 }
 
 int JKSCLOG_API_C jkscLogFinish()
 {
-    jkscLogInfo("Log Finished");
-    
-    if (logFile)
-        fclose(logFile);
+    ASSERT_LOG_INIT_FINISHING();
 
+    jkscLogInfo("Log Finished");
+    fclose(logFile);
     return (logFile == NULL);
 }
 
-char* JKSCLOG_API_C GetCurrentDateTime()
-{
-    time_t t = time(0);
-    struct tm *now = localtime(&t);
-
-    char *dateTime = calloc(20, sizeof(char));
-    strftime(dateTime, 20, "%Y-%m-%d %H:%M:%S", now);
-
-    return dateTime;
-}
