@@ -26,8 +26,8 @@ Clone the repository with `git clone https://github.com/juliokscesar/jkscLog.git
 - Using Static Library
     - Requirements: CMake >= 3.9 and MinGW or Visual Studio.
     - Open PowerShell on the repository root folder and type `mkdir build`, `cd build`
-        - Visual Studio: `cmake -G "Viual Studio [version] -A [arch] ..` and define `_CRT_SECURE_NO_WARNINGS` on your project.
-        - MinGW: `cmake -G "MinGW Makefiles" ..`
+        - Visual Studio: `cmake -G "Viual Studio [version] -A [arch] [-DJKSCLOG_C_LIB=ON] [-DJKSCLOG_CPP_LIB=ON] ..` and define `_CRT_SECURE_NO_WARNINGS` on your project.
+        - MinGW: `cmake -G "MinGW Makefiles" [-DJKSCLOG_C_LIB=ON] [-DJKSCLOG_CPP_LIB=ON] ..`
     - Add the library path to your project and link the library.
 
 ### Linux
@@ -35,7 +35,8 @@ Clone the repository with `git clone https://github.com/juliokscesar/jkscLog.git
     - Just `#include "jkscLog.h"` (C) or `#include "jkscLog.hpp"` (C++) in your code and add jkscLog.c (C) or jkscLog.cpp (C++) to compile with your project. C++ files includes the log in a namespace.
 - Using Static Library
     - Requirements: CMake >= 3.9, GCC and G++.
-    - Open a terminal on the repository root folder and execute `mkdir build && cd build && cmake --build .`
+    - Open a terminal on the repository root folder and execute `mkdir build && cd build`
+    - Run: `cmake -DJKSCLOG_C_LIB=ON ..` or `cmake -DJKSCLOG_CPP_LIB=ON ..`
     - Add the library path to your project and link the library.
 
 ## Example Code
