@@ -83,7 +83,7 @@ enum LogMode
 
 int JKSCLOG_API_C jkscLogInit(const char *logFileName);
 
-void JKSCLOG_API_C jkscLogWriteMode(int logMode, char *logFmt, ...);
+void JKSCLOG_API_C jkscLogWriteMode(int logMode, const char *logFmt, ...);
 
 int JKSCLOG_API_C jkscLogFinish();
 

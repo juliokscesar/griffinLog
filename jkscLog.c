@@ -134,7 +134,7 @@ void JKSCLOG_API_C jkscLogWriteModeFile(int logMode, const char *log, const char
     fprintf(logFile, "[%s] [%s] %s\n", dateTime, modes[logMode], log);
 }
 
-void JKSCLOG_API_C jkscLogWriteMode(int logMode, char *logFmt, ...)
+void JKSCLOG_API_C jkscLogWriteMode(int logMode, const char *logFmt, ...)
 {
     ASSERT_LOG_INIT_WRITING();
 
