@@ -36,7 +36,7 @@ void JKSCLOG_API_C jkscLogErrorCallback(int err)
             break;
 
         case 1:
-            fprintf(stderr, "Log Error Callback code 1: Trying to write on not initiated log\n");
+            fprintf(stderr, "Log Error Callback code 1: Trying to write to not initiated log\n");
             break;
     }
 
