@@ -15,7 +15,8 @@ Clone the repository with `git clone https://github.com/juliokscesar/jkscLog.git
 
 #### C++ (files are in cpp folder)
 - jkscLog.hpp
-- jkscLog.cpp \n
+- jkscLog.cpp
+
 **IT IS STRONGLY ADVISED TO NOT USE C++ FILES CURRENTLY AS IT NEEDS TO BE ENTIRELY REFACTORED. IF YOU ARE GOING TO USE C++, USE C FILES**
 
 ## Building
