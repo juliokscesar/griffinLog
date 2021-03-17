@@ -6,4 +6,8 @@ set(SRC_FILES
 	jkscLog.c
 )
 
+if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+	add_definitions(-D_CRT_SECURE_NO_WARNINGS)
+endif()
+
 add_library(jkscLog STATIC ${SRC_FILES})

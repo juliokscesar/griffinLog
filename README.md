@@ -1,12 +1,12 @@
-﻿# jksc Logging Lib - A Simple Logging Library for C/C++
-jksc Logging Lib is a simple logging library just to include the basics of logging info to a file, what you could simply do with no library, but jksc helps by having no need to write every single time.
+﻿# jkscLog - A Simple Logging Library for C/C++
+jkscLog is a simple logging library just to include the basics of logging info to a file, what you could simply do with no library, but jksc helps by having no need to write every single time.
 
 ## Attention
-jsksc Logging Lib literally only includes the basics - Initiating, Writing (Info, Debug, Warning, Critical) and Finishing (and a function to get the datetime).
+jkscLog literally only includes the basics - Initiating, Writing (Info, Debug, Warning, Critical, Fatal) and Finishing (and a function to get the datetime).
 
 ## Getting Started
-To use the jksc Logging Lib, you only need to clone the repository or download the needed files for your programming language. **THIS IS NOT AN ADVANCED LIBRARY, ONLY SOMETHING I WROTE TO USE ON PERSONAL PROJECTS**.
-Clone the repository with `git clone https://github.com/juliokscesar/jkscLogLib.git`
+To use jkscLib, you only need to clone the repository or download the needed files for your programming language. **THIS IS NOT AN ADVANCED LIBRARY, ONLY SOMETHING I WROTE TO USE ON PERSONAL PROJECTS**.
+Clone the repository with `git clone https://github.com/juliokscesar/jkscLog.git`
 
 ### Requirements
 #### C
@@ -16,9 +16,26 @@ Clone the repository with `git clone https://github.com/juliokscesar/jkscLogLib.
 #### C++ (files are in cpp folder)
 - jkscLog.hpp
 - jkscLog.cpp
+**IT IS STRONGLY ADVISED TO NOT USE C++ FILES CURRENTLY AS IT NEEDS TO BE ENTIRELY REFACTORED. IF YOU ARE GOING TO USE C++, USE C FILES**
 
 ## Building
-Just `#include "jkscLog.h"` (C) or `#include "jkscLog.hpp"` (C++) in your code and add Log.c (C) or Log.cpp (C++) to compile with your project. C++ files includes the log in a namespace.
+### Windows
+- Using the source code 
+    - Just `#include "jkscLog.h"` (C) or `#include "jkscLog.hpp"` (C++) in your code and add jkscLog.c (C) or jkscLog.cpp (C++) to compile with your project. C++ files includes the log in a namespace.
+- Using Static Library
+    - Requirements: CMake >= 3.9 and MinGW or Visual Studio.
+    - Open PowerShell on the repository root folder and type `mkdir build`, `cd build`
+        - Visual Studio: `cmake -G "Viual Studio [version] -A [arch] ..` and define `_CRT_SECURE_NO_WARNINGS` on your project.
+        - MinGW: `cmake -G "MinGW Makefiles" ..`
+    - Add the library path to your project and link the library.
+
+### Linux
+- Using the source code
+    - Just `#include "jkscLog.h"` (C) or `#include "jkscLog.hpp"` (C++) in your code and add jkscLog.c (C) or jkscLog.cpp (C++) to compile with your project. C++ files includes the log in a namespace.
+- Using Static Library
+    - Requirements: CMake >= 3.9, GCC and G++.
+    - Open a terminal on the repository root folder and execute `mkdir build && cd build && cmake --build .`
+    - Add the library path to your project and link the library.
 
 ## Example Code
 ### C
@@ -27,12 +44,8 @@ Just `#include "jkscLog.h"` (C) or `#include "jkscLog.hpp"` (C++) in your code a
 
 int main()
 {
-    // Initiate log with custom name
-    // if (!LogInitCustom("testlog.log"))
-        // return 1;
-
-    // Initiate log with default name (logfile.log)
-    if (!jkscLogInit())
+    // Initiate log with name passed as argument
+    if (!jkscLogInit("your_log_file.log"))
         return 1;
 
     // Info logging
@@ -48,7 +61,7 @@ int main()
     jkscLogCritical("Critical error! Find out today in %d", 2021);
 
     // Fatal logging
-    jkscLogFatal("Fatal error! Your pc will die, but it is %s", "just a joke");
+    jkscLogFatal("Fatal error! Your pc will die, %s", "joking");
 
     jkscLogFinish();
     return 0;
