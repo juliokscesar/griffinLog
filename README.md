@@ -26,7 +26,7 @@ Clone the repository with `git clone https://github.com/juliokscesar/jkscLog.git
 - Using Static Library
     - Requirements: CMake >= 3.9 and MinGW or Visual Studio.
     - Open PowerShell on the repository root folder and type `mkdir build`, `cd build`
-        - Visual Studio: `cmake -G "Viual Studio [version] -A [arch] [-DJKSCLOG_C_LIB=ON] [-DJKSCLOG_CPP_LIB=ON] ..` and define `_CRT_SECURE_NO_WARNINGS` on your project.
+        - Visual Studio: `cmake -G "Viual Studio [version]" -A [arch] -DJKSCLOG_C_LIB=ON ..` (C lib) or `cmake -G "Visual Studio [version]" -A [arch] -DJKSCLOG_CPP_LIB=ON` (C++ lib) and define `_CRT_SECURE_NO_WARNINGS` on your project.
         - MinGW: `cmake -G "MinGW Makefiles" [-DJKSCLOG_C_LIB=ON] [-DJKSCLOG_CPP_LIB=ON] ..`
     - Add the library path to your project and link the library.
 
