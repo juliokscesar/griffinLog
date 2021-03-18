@@ -73,7 +73,7 @@ static FILE *logFile;
 static const char *modes[] = { "INFO", "DEBUG", "WARN", "CRITICAL", "FATAL" };
 static const COLOR_ARRAY colors[] = { COLOR_BLUE, COLOR_GREEN, COLOR_YELLOW, COLOR_RED, COLOR_BLACK_RED };
 
-void JKSCLOG_API_C createLogDir()
+void JKSCLOG_API_C createLogDir(void)
 {
     #if defined(WIN32) || defined(_WIN32)
     CreateDirectoryA("logs", NULL);
@@ -82,7 +82,7 @@ void JKSCLOG_API_C createLogDir()
     #endif // WIN32 || _WIN32
 }
 
-char* JKSCLOG_API_C GetCurrentDateTime()
+char* JKSCLOG_API_C GetCurrentDateTime(void)
 {
     time_t t = time(0);
     struct tm *now = localtime(&t);
@@ -155,7 +155,7 @@ void JKSCLOG_API_C jkscLogWriteMode(int logMode, const char *logFmt, ...)
     free(log);
 }
 
-int JKSCLOG_API_C jkscLogFinish()
+int JKSCLOG_API_C jkscLogFinish(void)
 {
     ASSERT_LOG_INIT_FINISHING();
 

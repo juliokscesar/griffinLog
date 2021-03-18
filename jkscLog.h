@@ -85,7 +85,7 @@ int JKSCLOG_API_C jkscLogInit(const char *logFileName);
 
 void JKSCLOG_API_C jkscLogWriteMode(int logMode, const char *logFmt, ...);
 
-int JKSCLOG_API_C jkscLogFinish();
+int JKSCLOG_API_C jkscLogFinish(void);
 
 #ifdef __cplusplus
 }
