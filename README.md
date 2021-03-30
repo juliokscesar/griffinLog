@@ -1,4 +1,4 @@
-﻿# jkscLog - A Simple Logging Library for C/C++
+﻿# jkscLog - A Simple Logging Library for C
 jkscLog is a simple logging library just to include the basics of logging info to a file, what you could simply do with no library, but jksc helps by having no need to write every single time.
 
 ## Attention
@@ -9,40 +9,34 @@ To use jkscLib, you only need to clone the repository or download the needed fil
 Clone the repository with `git clone https://github.com/juliokscesar/jkscLog.git`
 
 ### Requirements
-#### C
 - jkscLog.h
 - jkscLog.c
+- CMake (if you are going to use the static library)
 
-#### C++ (files are in cpp folder)
-- jkscLog.hpp
-- jkscLog.cpp
-
-**IT IS STRONGLY ADVISED TO NOT USE C++ FILES CURRENTLY AS IT NEEDS TO BE ENTIRELY REFACTORED. IF YOU ARE GOING TO USE C++, USE C FILES**
+**This library can be used with C++ as well.**
 
 ## Building
 ### Windows
 - Using the source code 
-    - Just `#include "jkscLog.h"` (C) or `#include "jkscLog.hpp"` (C++) in your code and add jkscLog.c (C) or jkscLog.cpp (C++) to compile with your project. C++ files includes the log in a namespace.
+    - Just `#include "jkscLog.h"` in your code and add jkscLog.c to compile with your project. This library can be used with C++ as well.
 - Using Static Library
     - Requirements: CMake >= 3.9 and MinGW or Visual Studio.
     - Open PowerShell on the repository root folder and execute `mkdir build; cd build`
         - Visual Studio: `cmake -G "Viual Studio [version]" -A [arch] ..` 
         - MinGW: `cmake -G "MinGW Makefiles" ..`
-    - ** By default the C library will be built. If you want to use C++, add -DJKSCLOG_CPP_LIB=ON**
     - Execute `cmake --build .`
     - Add the library path to your project and link the library.
 
 ### Linux
 - Using the source code
-    - Just `#include "jkscLog.h"` (C) or `#include "jkscLog.hpp"` (C++) in your code and add jkscLog.c (C) or jkscLog.cpp (C++) to compile with your project. C++ files includes the log in a namespace.
+    - Just `#include "jkscLog.h"` in your code and add jkscLog.c to compile with your project. This library can be used with C++ as well.
 - Using Static Library
     - Requirements: CMake >= 3.9, GCC and G++.
     - Open a terminal on the repository root folder and execute `mkdir build && cd build`
-    - Run: `cmake .. && cmake --build .` or `cmake -DJKSCLOG_CPP_LIB=ON .. && cmake --build .` to build C++ lib.
+    - Run: `cmake .. && cmake --build .`
     - Add the library path to your project and link the library.
 
 ## Example Code
-### C
 ```c
 #include "jkscLog.h"
 
@@ -68,38 +62,6 @@ int main()
     jkscLogFatal("Fatal error! Your pc will die, %s", "joking");
 
     jkscLogFinish();
-    return 0;
-}
-```
-
-### C++
-```cpp
-#include "jkscLog.hpp"
-
-int main()
-{
-    // Initiate the log with default name ("logfile.log")
-    // jkscLog::Init();
-
-    // Initiate the log with custom name
-    if (!jkscLog::Init("log_cpp.log"))
-        return -1;
-
-    // Write log info
-    jkscLog::Info("This is an info log with %s", "formatted strings");
-    
-    // Write log debug
-    jkscLog::Debug("This is a debug log with %s with color %s written in %d", "formatted strings", "green", 2021);
-
-    // Write log warning
-    jkscLog::Warn("This is a warning log in %d", 2020 + 1);
-    
-    // Write log critical
-    jkscLog::Critical("Critical logging hello %s", "user");
-
-    // Finish the log
-    jkscLog::Finish();
-
     return 0;
 }
 ```
