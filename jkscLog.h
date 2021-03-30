@@ -27,12 +27,16 @@
 
 /* JKSCLOG_API_C DEFINITION */
 #if (defined(__GNUC__) || defined(__GNUG__) || defined(__clang__))
-    #define JKSCLOG_API_C __attribute__ ((__cdecl__))
+    #ifdef __cplusplus
+        #define JKSCLOG_API_C __attribute__ ((__cdecl__))
+    #else
+        #define JKSCLOG_API_C
+    #endif // __cplusplus
 #elif defined(_MSC_VER) || (defined(__MINGW32__) || defined(__MINGW64__))
     #define JKSCLOG_API_C __cdecl
 #endif // __GNUC__ || __GNUG__ || __clang__
 
-/* MUST DEFINE _CRT_SECURE_NO_WARNINGS ON MSC (VISUAL STUDIO) */
+/* MUST DEFINE _CRT_SECURE_NO_WARNINGS ON MSVC (VISUAL STUDIO) */
 #ifdef _MSC_VER
     #ifndef _CRT_SECURE_NO_WARNINGS
         #error _CRT_SECURE_NO_WARNINGS not defined
