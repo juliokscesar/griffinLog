@@ -24,10 +24,10 @@
 
 #include "griffinLog.h"
 
-#define ASSERT_LOG_INIT_WRITING() if(!log_file) grfLogErrorCallback(1)
-#define ASSERT_LOG_INIT_FINISHING() if (!log_file) grfLogErrorCallback(-1)
+#define ASSERT_LOG_INIT_WRITING() if(!log_file) grf_log_error_callback(1)
+#define ASSERT_LOG_INIT_FINISHING() if (!log_file) grf_log_error_callback(-1)
 
-void GRIFFIN_LOG_API_C grfLogErrorCallback(int err)
+void GRIFFIN_LOG_API_C grf_log_error_callback(int err)
 {
     switch (err)
     {
