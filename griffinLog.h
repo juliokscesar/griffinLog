@@ -22,18 +22,18 @@
 * SOFTWARE.
 */
 
-#ifndef JKSCLOG_H
-#define JKSCLOG_H
+#ifndef GRIFFIN_LOG_H
+#define GRIFFIN_LOG_H
 
-/* JKSCLOG_API_C DEFINITION */
+/* GRIFFIN_LOG_API_C DEFINITION */
 #if defined(__GNUC__) || defined(__GNUG__) || defined(__clang__)
     #ifdef __cplusplus
-        #define JKSCLOG_API_C __attribute__ ((__cdecl__))
+        #define GRIFFIN_LOG_API_C __attribute__ ((__cdecl__))
     #else
-        #define JKSCLOG_API_C
+        #define GRIFFIN_LOG_API_C
     #endif // __cplusplus
 #elif defined(_MSC_VER) || (defined(__MINGW32__) || defined(__MINGW64__))
-    #define JKSCLOG_API_C __cdecl
+    #define GRIFFIN_LOG_API_C __cdecl
 #endif // __GNUC__ || __GNUG__ || __clang__
 
 /* MUST DEFINE _CRT_SECURE_NO_WARNINGS ON MSVC (VISUAL STUDIO) */
@@ -70,11 +70,11 @@ extern "C" {
 #include <string.h>
 #include <time.h>
 
-#define jkscLogInfo(...) jkscLogWriteMode(INFO, __VA_ARGS__)
-#define jkscLogDebug(...) jkscLogWriteMode(DEBUG, __VA_ARGS__)
-#define jkscLogWarn(...) jkscLogWriteMode(WARN, __VA_ARGS__)
-#define jkscLogCritical(...) jkscLogWriteMode(CRITICAL, __VA_ARGS__)
-#define jkscLogFatal(...) jkscLogWriteMode(FATAL, __VA_ARGS__)
+#define grf_log_info(...) grf_log_write_mode(INFO, __VA_ARGS__)
+#define grf_log_debug(...) grf_log_write_mode(DEBUG, __VA_ARGS__)
+#define grf_log_warn(...) grf_log_write_mode(WARN, __VA_ARGS__)
+#define grf_log_critical(...) grf_log_write_mode(CRITICAL, __VA_ARGS__)
+#define grf_log_fatal(...) grf_log_write_mode(FATAL, __VA_ARGS__)
 
 enum LogMode
 {
@@ -85,11 +85,11 @@ enum LogMode
     FATAL    = 4
 };
 
-int JKSCLOG_API_C jkscLogInit(const char *logFileName);
+int GRIFFIN_LOG_API_C grf_log_init(const char *log_file_name);
 
-void JKSCLOG_API_C jkscLogWriteMode(int logMode, const char *logFmt, ...);
+void GRIFFIN_LOG_API_C grf_log_write_mode(int log_mode, const char *log_fmt, ...);
 
-int JKSCLOG_API_C jkscLogFinish(void);
+int GRIFFIN_LOG_API_C grf_log_finish(void);
 
 #ifdef __cplusplus
 }

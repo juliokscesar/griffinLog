@@ -22,12 +22,12 @@
 * SOFTWARE.
 */
 
-#include "jkscLog.h"
+#include "griffinLog.h"
 
-#define ASSERT_LOG_INIT_WRITING() if(!logFile) jkscLogErrorCallback(1)
-#define ASSERT_LOG_INIT_FINISHING() if (!logFile) jkscLogErrorCallback(-1)
+#define ASSERT_LOG_INIT_WRITING() if(!log_file) grfLogErrorCallback(1)
+#define ASSERT_LOG_INIT_FINISHING() if (!log_file) grfLogErrorCallback(-1)
 
-void JKSCLOG_API_C jkscLogErrorCallback(int err)
+void GRIFFIN_LOG_API_C grfLogErrorCallback(int err)
 {
     switch (err)
     {
@@ -46,7 +46,7 @@ void JKSCLOG_API_C jkscLogErrorCallback(int err)
 #if defined(WIN32) || defined(_WIN32)
 #include <Windows.h>
 
-void JKSCLOG_API_C SetConsoleColor(WORD* Attributes, DWORD Color)
+void GRIFFIN_LOG_API_C SetConsoleColor(WORD* Attributes, DWORD Color)
 {
     CONSOLE_SCREEN_BUFFER_INFO Info;
     HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -55,7 +55,7 @@ void JKSCLOG_API_C SetConsoleColor(WORD* Attributes, DWORD Color)
     SetConsoleTextAttribute(hStdout, Color);
 }
 
-void JKSCLOG_API_C ResetConsoleColor(WORD Attributes)
+void GRIFFIN_LOG_API_C ResetConsoleColor(WORD Attributes)
 {
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), Attributes);
 }
@@ -72,12 +72,12 @@ void JKSCLOG_API_C ResetConsoleColor(WORD Attributes)
     typedef char* COLOR_ARRAY;
 #endif // WIN32 || _WIN32
 
-static FILE *logFile;
+static FILE *log_file;
 
 static const char *modes[] = { "INFO", "DEBUG", "WARN", "CRITICAL", "FATAL" };
 static const COLOR_ARRAY colors[] = { COLOR_BLUE, COLOR_GREEN, COLOR_YELLOW, COLOR_RED, COLOR_BLACK_RED };
 
-void JKSCLOG_API_C createLogDir(void)
+void GRIFFIN_LOG_API_C create_log_dir(void)
 {
     #if defined(WIN32) || defined(_WIN32)
     CreateDirectoryA("logs", NULL);
@@ -86,85 +86,85 @@ void JKSCLOG_API_C createLogDir(void)
     #endif // WIN32 || _WIN32
 }
 
-char* JKSCLOG_API_C GetCurrentDateTime(void)
+char* GRIFFIN_LOG_API_C get_current_datetime(void)
 {
     time_t t = time(0);
     struct tm *now = localtime(&t);
 
-    char *dateTime = calloc(20, sizeof(char));
-    strftime(dateTime, 20, "%Y-%m-%d %H:%M:%S", now);
+    char *datetime = calloc(20, sizeof(char));
+    strftime(datetime, 20, "%Y-%m-%d %H:%M:%S", now);
 
-    return dateTime;
+    return datetime;
 }
 
-int JKSCLOG_API_C jkscLogInit(const char *logFileName)
+int GRIFFIN_LOG_API_C grf_log_init(const char *log_file_name)
 {
-    if (!logFile)
+    if (!log_file)
     {
-        createLogDir();
+        create_log_dir();
 
-        char logFilePath[256] = "logs/";
-        strncat(logFilePath, logFileName, sizeof(logFilePath) - strlen(logFileName));
+        char log_file_path[256] = "logs/";
+        strncat(log_file_path, log_file_name, sizeof(log_file_path) - strlen(log_file_name));
 
-        logFile = fopen(logFilePath, "w");
+        log_file = fopen(log_file_path, "w");
     }
 
-    jkscLogInfo("Log Intiated");
-    return !(logFile == NULL);
+    grf_log_info("Log Intiated");
+    return !(log_file == NULL);
 }
 
-void JKSCLOG_API_C jkscLogWriteModeConsole(int logMode, const char *log, const char *dateTime)
+void GRIFFIN_LOG_API_C grf_log_write_mode_console(int log_mode, const char *log, const char *datetime)
 {
     #if defined(WIN32) || defined(_WIN32)
 
-    printf("[%s] [", dateTime);
+    printf("[%s] [", datetime);
 
     WORD attributes;
-    SetConsoleColor(&attributes, colors[logMode]);
-    printf("%s", modes[logMode]);
+    SetConsoleColor(&attributes, colors[log_mode]);
+    printf("%s", modes[log_mode]);
     ResetConsoleColor(attributes);
 
     printf("] %s\n", log);
 
     #else
 
-    printf("[%s] [%s%s%s] %s\n", dateTime, colors[logMode], modes[logMode], COLOR_RESET, log);
+    printf("[%s] [%s%s%s] %s\n", datetime, colors[log_mode], modes[log_mode], COLOR_RESET, log);
 
     #endif // WIN32 || _WIN32
 }
 
-void JKSCLOG_API_C jkscLogWriteModeFile(int logMode, const char *log, const char *dateTime)
+void GRIFFIN_LOG_API_C grf_log_write_mode_file(int log_mode, const char *log, const char *datetime)
 {
-    fprintf(logFile, "[%s] [%s] %s\n", dateTime, modes[logMode], log);
+    fprintf(log_file, "[%s] [%s] %s\n", datetime, modes[log_mode], log);
 }
 
-void JKSCLOG_API_C jkscLogWriteMode(int logMode, const char *logFmt, ...)
+void GRIFFIN_LOG_API_C grf_log_write_mode(int log_mode, const char *log_fmt, ...)
 {
     ASSERT_LOG_INIT_WRITING();
 
-    const size_t logSize = strlen(logFmt) + 256;
-    char *log = malloc(sizeof(char) * logSize);
+    const size_t log_size = strlen(log_fmt) + 256;
+    char *log = malloc(sizeof(char) * log_size);
 
     va_list vaArgs;
-    va_start(vaArgs, logFmt);
-    vsnprintf(log, logSize - 1, logFmt, vaArgs);
+    va_start(vaArgs, log_fmt);
+    vsnprintf(log, log_size - 1, log_fmt, vaArgs);
     va_end(vaArgs);
 
-    char *dateTime = GetCurrentDateTime();
+    char *datetime = get_current_datetime();
 
-    jkscLogWriteModeConsole(logMode, log, dateTime);
-    jkscLogWriteModeFile(logMode, log, dateTime);
+    grf_log_write_mode_console(log_mode, log, datetime);
+    grf_log_write_mode_file(log_mode, log, datetime);
 
-    free(dateTime);
+    free(datetime);
     free(log);
 }
 
-int JKSCLOG_API_C jkscLogFinish(void)
+int GRIFFIN_LOG_API_C grf_log_finish(void)
 {
     ASSERT_LOG_INIT_FINISHING();
 
-    jkscLogInfo("Log Finished");
-    fclose(logFile);
-    return (logFile == NULL);
+    grf_log_info("Log Finished");
+    fclose(log_file);
+    return (log_file == NULL);
 }
 

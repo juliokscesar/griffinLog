@@ -24,14 +24,14 @@
 
 #include <stdio.h>
 
-#include "../jkscLog.h"
+#include "../griffinLog.h"
 
 int main()
 {
-    printf("Error testing jkscLog\n");
+    printf("Error testing griffinLog\n");
 
-    // jkscLogInfo("Writing to not initiated log"); // -> Error writing to not initiated log
-    jkscLogFinish(); // -> Error finishing not initiated log
+    // grf_log_info("Writing to not initiated log"); // -> Error writing to not initiated log
+    grf_log_finish(); // -> Error finishing not initiated log
 
     return 0;
 }

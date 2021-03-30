@@ -22,34 +22,34 @@
 * SOFTWARE.
 */
 
-#include "../jkscLog.h"
+#include "../griffinLog.h"
 
 /* 
 Compile with:
-gcc test_c.c ../jkscLog.c
+gcc test_c.c ../griffinLog.c
 */
 
 int main()
 {
     // Initiate log with given file name
-    if (!jkscLogInit("testc_log.log"))
+    if (!grf_log_init("testc_log.log"))
         return 1;
 
     // Info logging
-    jkscLogInfo("hello my name is %s how are you today?", "Julio");
+    grf_log_info("hello my name is %s how are you today?", "Julio");
 
     // Debug logging
-    jkscLogDebug("hello this is a %s debug message in %d", "formatted", 2021);
+    grf_log_debug("hello this is a %s debug message in %d", "formatted", 2021);
 
     // Warn Logging
-    jkscLogWarn("Warning! This is a log warning to you %s", "user");
+    grf_log_warn("Warning! This is a log warning to you %s", "user");
 
     // Critical logging
-    jkscLogCritical("Critical error! Find out today in %d", 2021);
+    grf_log_critical("Critical error! Find out today in %d", 2021);
 
     // Fatal logging
-    jkscLogFatal("Fatal error! Your pc will die, but it is %s", "just a joke");
+    grf_log_fatal("Fatal error! Your pc will die, but it is %s", "just a joke");
 
-    jkscLogFinish();
+    grf_log_finish();
     return 0;
 }

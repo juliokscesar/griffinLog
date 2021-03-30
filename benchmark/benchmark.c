@@ -40,7 +40,7 @@ gcc -o benchmark benchmark.c ../jkscLog.c
 
 #endif // WIN32 || _WIN32
 
-#include "../jkscLog.h"
+#include "../griffinLog.h"
 
 
 double get_time()
@@ -62,14 +62,15 @@ int main()
 {
     double start = get_time();
 
-    jkscLogInit("benchmarking_log_C.log");
+    grf_log_init("benchmarking_log_C.log");
 
-    jkscLogInfo("Writing INFO to log");
-    jkscLogWarn("Warning! Log warn benchmarking test");
-    jkscLogCritical("Testing critical log %s", "on benchmark.c");
-    jkscLogFatal("Writing fatal %s to log benchmarking", "message");
+    grf_log_info("Writing INFO to log");
+    grf_log_debug("Writing %s logging", "debug");
+    grf_log_warn("Warning! Log warn benchmarking test");
+    grf_log_critical("Testing critical log %s", "on benchmark.c");
+    grf_log_fatal("Writing fatal %s to log benchmarking", "message");
 
-    jkscLogFinish();
+    grf_log_finish();
 
     double end = get_time();
 
