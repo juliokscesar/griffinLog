@@ -26,7 +26,7 @@
 #define JKSCLOG_H
 
 /* JKSCLOG_API_C DEFINITION */
-#if defined(__GNUC__) || defined(__GNUG__) || defined(__clang__)
+#if (defined(__GNUC__) || defined(__GNUG__) || defined(__clang__))
     #define JKSCLOG_API_C __attribute__ ((__cdecl__))
 #elif defined(_MSC_VER) || (defined(__MINGW32__) || defined(__MINGW64__))
     #define JKSCLOG_API_C __cdecl

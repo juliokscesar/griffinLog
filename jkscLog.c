@@ -60,6 +60,10 @@ void JKSCLOG_API_C ResetConsoleColor(WORD Attributes)
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), Attributes);
 }
 
+#else
+
+#include <sys/stat.h>
+
 #endif // WIN32 || _WIN32
 
 #if defined(WIN32) || defined(_WIN32)
@@ -78,7 +82,7 @@ void JKSCLOG_API_C createLogDir(void)
     #if defined(WIN32) || defined(_WIN32)
     CreateDirectoryA("logs", NULL);
     #else
-    system("mkdir -p ./logs");
+    mkdir("./logs", S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
     #endif // WIN32 || _WIN32
 }
 
