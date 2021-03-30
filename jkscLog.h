@@ -26,7 +26,7 @@
 #define JKSCLOG_H
 
 /* JKSCLOG_API_C DEFINITION */
-#if (defined(__GNUC__) || defined(__GNUG__) || defined(__clang__))
+#if defined(__GNUC__) || defined(__GNUG__) || defined(__clang__)
     #ifdef __cplusplus
         #define JKSCLOG_API_C __attribute__ ((__cdecl__))
     #else
