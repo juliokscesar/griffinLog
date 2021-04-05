@@ -32,24 +32,24 @@ gcc test_c.c ../griffinLog.c
 int main()
 {
     // Initiate log with given file name
-    if (!grf_log_init("testc_log.log"))
+    if (!grflog_init("testc_log.log"))
         return 1;
 
     // Info logging
-    grf_log_info("hello my name is %s how are you today?", "Julio");
+    grflog_info("hello my name is %s how are you today?", "Julio");
 
     // Debug logging
-    grf_log_debug("hello this is a %s debug message in %d", "formatted", 2021);
+    grflog_debug("hello this is a %s debug message in %d", "formatted", 2021);
 
     // Warn Logging
-    grf_log_warn("Warning! This is a log warning to you %s", "user");
+    grflog_warn("Warning! This is a log warning to you %s", "user");
 
     // Critical logging
-    grf_log_critical("Critical error! Find out today in %d", 2021);
+    grflog_critical("Critical error! Find out today in %d", 2021);
 
     // Fatal logging
-    grf_log_fatal("Fatal error! Your pc will die, but it is %s", "just a joke");
+    grflog_fatal("Fatal error! Your pc will die, but it is %s", "just a joke");
 
-    grf_log_finish();
+    grflog_finish();
     return 0;
 }

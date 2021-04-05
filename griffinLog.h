@@ -45,19 +45,19 @@
 
 /* PLATFORM SPECIFIC CONSOLE COLOR DEFINITION */
 #if defined(WIN32) || defined(_WIN32)
-    #define COLOR_RED       0x0c
-    #define COLOR_GREEN     0x0a
-    #define COLOR_BLUE      0x09
-    #define COLOR_YELLOW    0x0e
-    #define COLOR_BLACK_RED 0xc0
+    #define GRIFFIN_COLOR_RED       0x0c
+    #define GRIFFIN_COLOR_GREEN     0x0a
+    #define GRIFFIN_COLOR_BLUE      0x09
+    #define GRIFFIN_COLOR_YELLOW    0x0e
+    #define GRIFFIN_COLOR_BLACK_RED 0xc0
 #else
     // ANSI escape sequences for UNIX systems
-    #define COLOR_RED       "\x1b[31;1;1m"
-    #define COLOR_GREEN     "\x1b[32;1;1m"
-    #define COLOR_BLUE      "\x1b[34;1;1m"
-    #define COLOR_YELLOW    "\x1b[38;2;255;255;1;1m"
-    #define COLOR_BLACK_RED "\x1b[38;2;0;0;0;48;2;255;0;0;1;1m"
-    #define COLOR_RESET     "\x1b[0m"
+    #define GRIFFIN_COLOR_RED       "\x1b[31;1;1m"
+    #define GRIFFIN_COLOR_GREEN     "\x1b[32;1;1m"
+    #define GRIFFIN_COLOR_BLUE      "\x1b[34;1;1m"
+    #define GRIFFIN_COLOR_YELLOW    "\x1b[38;2;255;255;1;1m"
+    #define GRIFFIN_COLOR_BLACK_RED "\x1b[38;2;0;0;0;48;2;255;0;0;1;1m"
+    #define GRIFFIN_COLOR_RESET     "\x1b[0m"
 #endif // WIN32 || _WIN32
 
 #ifdef __cplusplus
@@ -68,15 +68,16 @@ extern "C" {
 #include <stdlib.h>
 #include <stdarg.h>
 #include <string.h>
+#include <stdint.h>
 #include <time.h>
 
-#define grf_log_info(...) grf_log_write_mode(INFO, __VA_ARGS__)
-#define grf_log_debug(...) grf_log_write_mode(DEBUG, __VA_ARGS__)
-#define grf_log_warn(...) grf_log_write_mode(WARN, __VA_ARGS__)
-#define grf_log_critical(...) grf_log_write_mode(CRITICAL, __VA_ARGS__)
-#define grf_log_fatal(...) grf_log_write_mode(FATAL, __VA_ARGS__)
+#define grflog_info(...) grflog_write_level(INFO, __VA_ARGS__)
+#define grflog_debug(...) grflog_write_level(DEBUG, __VA_ARGS__)
+#define grflog_warn(...) grflog_write_level(WARN, __VA_ARGS__)
+#define grflog_critical(...) grflog_write_level(CRITICAL, __VA_ARGS__)
+#define grflog_fatal(...) grflog_write_level(FATAL, __VA_ARGS__)
 
-enum LogMode
+enum LogLevel
 {
     INFO     = 0,
     DEBUG    = 1,
@@ -85,11 +86,11 @@ enum LogMode
     FATAL    = 4
 };
 
-int GRIFFIN_LOG_API_C grf_log_init(const char *log_file_name);
+int GRIFFIN_LOG_API_C grflog_init(const char *log_file_name);
 
-void GRIFFIN_LOG_API_C grf_log_write_mode(int log_mode, const char *log_fmt, ...);
+void GRIFFIN_LOG_API_C grflog_write_level(uint32_t log_level, const char *log_fmt, ...);
 
-int GRIFFIN_LOG_API_C grf_log_finish(void);
+int GRIFFIN_LOG_API_C grflog_finish(void);
 
 #ifdef __cplusplus
 }

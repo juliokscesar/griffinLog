@@ -62,15 +62,15 @@ int main()
 {
     double start = get_time();
 
-    grf_log_init("benchmarking_log_C.log");
+    grflog_init("benchmarking_log_C.log");
+    
+    grflog_info("Writing INFO to log");
+    grflog_debug("Writing %s logging", "debug");
+    grflog_warn("Warning! Log warn benchmarking test");
+    grflog_critical("Testing critical log %s", "on benchmark.c");
+    grflog_fatal("Writing fatal %s to log benchmarking", "message");
 
-    grf_log_info("Writing INFO to log");
-    grf_log_debug("Writing %s logging", "debug");
-    grf_log_warn("Warning! Log warn benchmarking test");
-    grf_log_critical("Testing critical log %s", "on benchmark.c");
-    grf_log_fatal("Writing fatal %s to log benchmarking", "message");
-
-    grf_log_finish();
+    grflog_finish();
 
     double end = get_time();
 
