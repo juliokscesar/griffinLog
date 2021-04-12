@@ -43,8 +43,10 @@ void GRIFFIN_LOG_API_C grflog_error_callback(int err)
     exit(EXIT_FAILURE);
 }
 
-#if defined(WIN32) || defined(_WIN32)
+#if defined(GRIFFIN_LOG_WIN32)
 #include <Windows.h>
+
+typedef DWORD GRIFFIN_COLOR;
 
 void GRIFFIN_LOG_API_C SetConsoleColor(WORD* Attributes, DWORD Color)
 {
@@ -64,21 +66,17 @@ void GRIFFIN_LOG_API_C ResetConsoleColor(WORD Attributes)
 
 #include <sys/stat.h>
 
-#endif // WIN32 || _WIN32
+typedef char* GRIFFIN_COLOR;
 
-#if defined(WIN32) || defined(_WIN32)
-    typedef DWORD GRIFFIN_COLOR;
-#else
-    typedef char* GRIFFIN_COLOR;
-#endif // WIN32 || _WIN32
+#endif // GRIFFIN_LOG_WIN32
 
 void GRIFFIN_LOG_API_C create_log_dir(void)
 {
-    #if defined(WIN32) || defined(_WIN32)
+    #if defined(GRIFFIN_LOG_WIN32)
     CreateDirectoryA("logs", NULL);
     #else
     mkdir("./logs", S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
-    #endif // WIN32 || _WIN32
+    #endif // GRIFFIN_LOG_WIN32
 }
 
 char* GRIFFIN_LOG_API_C get_current_datetime(void)
@@ -126,7 +124,7 @@ void GRIFFIN_LOG_API_C grflog_write_level_console(uint32_t log_lvl, const char *
     const char* lvl_str = get_loglvl_str(log_lvl);
     const GRIFFIN_COLOR lvl_color = get_loglvl_color(log_lvl);
 
-    #if defined(WIN32) || defined(_WIN32)
+    #if defined(GRIFFIN_LOG_WIN32)
 
     printf("[%s] [", datetime);
 
@@ -137,11 +135,11 @@ void GRIFFIN_LOG_API_C grflog_write_level_console(uint32_t log_lvl, const char *
 
     printf("] %s\n", log);
 
-    #else
+    #elif defined(GRIFFIN_LOG_LINUX)
 
     printf("[%s] [%s%s%s] %s\n", datetime, lvl_color, lvl_str, GRIFFIN_COLOR_RESET, log);
 
-    #endif // WIN32 || _WIN32
+    #endif // GRIFFIN_LOG_WIN32
 }
 
 void GRIFFIN_LOG_API_C grflog_write_level_file(uint32_t log_lvl, const char *log, const char *datetime)

@@ -25,6 +25,18 @@
 #ifndef GRIFFIN_LOG_H
 #define GRIFFIN_LOG_H
 
+/* GRIFFIN LOG PLATFORM DEFINITIONS */
+#if defined(WIN32) || defined(_WIN32)
+    #define GRIFFIN_LOG_WIN32
+#else
+    #if defined(__linux__) && !defined(__ANDROID__)
+        #define GRIFFIN_LOG_LINUX
+    #else
+        #error GRIFFIN LOG ONLY SUPPORTS WINDOWS AND LINUX
+    #endif // __linux__ && !__ANDROID__
+#endif // WIN32 || _WIN32
+
+
 /* GRIFFIN_LOG_API_C DEFINITION */
 #if defined(__GNUC__) || defined(__GNUG__) || defined(__clang__)
     #ifdef __cplusplus
@@ -44,13 +56,13 @@
 #endif // _MSC_VER
 
 /* PLATFORM SPECIFIC CONSOLE COLOR DEFINITION */
-#if defined(WIN32) || defined(_WIN32)
+#if defined(GRIFFIN_LOG_WIN32)
     #define GRIFFIN_COLOR_RED       0x0c
     #define GRIFFIN_COLOR_GREEN     0x0a
     #define GRIFFIN_COLOR_BLUE      0x09
     #define GRIFFIN_COLOR_YELLOW    0x0e
     #define GRIFFIN_COLOR_BLACK_RED 0xc0
-#else
+#elif defined(GRIFFIN_LOG_LINUX)
     // ANSI escape sequences for UNIX systems
     #define GRIFFIN_COLOR_RED       "\x1b[31;1;1m"
     #define GRIFFIN_COLOR_GREEN     "\x1b[32;1;1m"

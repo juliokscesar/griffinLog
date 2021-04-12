@@ -63,7 +63,8 @@
         "string_view": "cpp",
         "bit": "cpp",
         "windows.h": "c",
-        "jksclog.h": "c"
+        "jksclog.h": "c",
+        "resource.h": "c"
     },
     "cSpell.words": [
         "jksc",
