@@ -57,12 +57,16 @@
 
 /* PLATFORM SPECIFIC CONSOLE COLOR DEFINITION */
 #if defined(GRIFFIN_LOG_WIN32)
+    typedef DWORD GRIFFIN_COLOR;
+
     #define GRIFFIN_COLOR_RED       0x0c
     #define GRIFFIN_COLOR_GREEN     0x0a
     #define GRIFFIN_COLOR_BLUE      0x09
     #define GRIFFIN_COLOR_YELLOW    0x0e
     #define GRIFFIN_COLOR_BLACK_RED 0xc0
 #elif defined(GRIFFIN_LOG_LINUX)
+    typedef char* GRIFFIN_COLOR;
+
     // ANSI escape sequences for UNIX systems
     #define GRIFFIN_COLOR_RED       "\x1b[31;1;1m"
     #define GRIFFIN_COLOR_GREEN     "\x1b[32;1;1m"
@@ -98,9 +102,9 @@ enum LogLevel
     FATAL    = 4
 };
 
-int GRIFFIN_LOG_API_C grflog_init(const char *log_file_name);
+int GRIFFIN_LOG_API_C grflog_init(const char* log_file_name);
 
-void GRIFFIN_LOG_API_C grflog_write_level(uint32_t log_level, const char *log_fmt, ...);
+void GRIFFIN_LOG_API_C grflog_write_level(uint32_t log_level, const char* log_fmt, ...);
 
 int GRIFFIN_LOG_API_C grflog_finish(void);
 
