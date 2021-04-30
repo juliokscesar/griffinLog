@@ -37,15 +37,17 @@
 #endif // WIN32 || _WIN32
 
 
-/* GRIFFIN_LOG_API_C DEFINITION */
+/* GRIFFIN_LOG_API_C AND GRIFFIN_LOG_FMT_FUNC DEFINITION */
 #if defined(__GNUC__) || defined(__GNUG__) || defined(__clang__)
     #ifdef __cplusplus
         #define GRIFFIN_LOG_API_C __attribute__ ((__cdecl__))
     #else
         #define GRIFFIN_LOG_API_C
     #endif // __cplusplus
+    #define GRIFFIN_LOG_FMT_FUNC __attribute__ ((format(printf, 2, 3)))
 #elif defined(_MSC_VER) || (defined(__MINGW32__) || defined(__MINGW64__))
     #define GRIFFIN_LOG_API_C __cdecl
+    #define GRIFFIN_LOG_FMT_FUNC
 #endif // __GNUC__ || __GNUG__ || __clang__
 
 /* MUST DEFINE _CRT_SECURE_NO_WARNINGS ON MSVC (VISUAL STUDIO) */
@@ -67,7 +69,7 @@
 #elif defined(GRIFFIN_LOG_LINUX)
     typedef char* GRIFFIN_COLOR;
 
-    // ANSI escape sequences for UNIX systems
+    // ANSI escape sequences for Linux systems
     #define GRIFFIN_COLOR_RED       "\x1b[31;1;1m"
     #define GRIFFIN_COLOR_GREEN     "\x1b[32;1;1m"
     #define GRIFFIN_COLOR_BLUE      "\x1b[34;1;1m"
@@ -107,7 +109,7 @@ enum LogLevel
  * @param log_level The log level of this event (see enum LogLevel)
  * @param log_fmt The log message format (with printf-like placeholders)
 */
-void GRIFFIN_LOG_API_C grflog_log(uint32_t log_level, const char* log_fmt, ...);
+void GRIFFIN_LOG_API_C grflog_log(uint32_t log_level, const char* log_fmt, ...) GRIFFIN_LOG_FMT_FUNC;
 
 /**
  * Initialize file logging and output to log_file_name file.
@@ -125,4 +127,4 @@ int GRIFFIN_LOG_API_C grflog_finish_file(void);
 }
 #endif // __cplusplus
 
-#endif // JKSCLOG_H
+#endif // GRIFFIN_LOG_H
