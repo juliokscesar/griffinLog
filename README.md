@@ -40,12 +40,8 @@ Clone the repository with `git clone https://github.com/juliokscesar/griffinLog.
 ```
 #include "griffinLog.h"
 
-int main()
+int main(void)
 {
-    // Initiate log with given file name
-    if (!grflog_init("testc_log.log"))
-        return 1;
-
     // Info logging
     grflog_info("hello my name is %s how are you today?", "Julio");
 
@@ -55,13 +51,19 @@ int main()
     // Warn Logging
     grflog_warn("Warning! This is a log warning to you %s", "user");
 
+    // Initialize file logging
+    if (!grflog_init_file("logfilename.log"))
+        return -1;
+    grflog_info("From now, it will log to a file as well!");
+
     // Critical logging
     grflog_critical("Critical error! Find out today in %d", 2021);
 
     // Fatal logging
     grflog_fatal("Fatal error! Your pc will die, but it is %s", "just a joke");
 
-    grflog_finish();
+    // Finish file logging (needs to be called if you initialized it)
+    grflog_finish_file();
     return 0;
 }
 ```

@@ -97,7 +97,6 @@ const GRIFFIN_COLOR get_log_lvl_color(uint32_t lvl)
     return level_colors[lvl];
 }
 
-// TODO: Implement log_event struct to contain everything
 
 typedef struct
 {

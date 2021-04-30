@@ -29,7 +29,7 @@ Compile with:
 gcc test_c.c ../griffinLog.c
 */
 
-int main()
+int main(void)
 {
     // Info logging
     grflog_info("hello my name is %s how are you today?", "Julio");
