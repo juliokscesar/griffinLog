@@ -114,13 +114,14 @@ void GRIFFIN_LOG_API_C grflog_log(uint32_t log_level, const char* log_fmt, ...) 
 /**
  * Initialize file logging and output to log_file_name file.
  * @param log_file_name The file's name.
+ * @return 1 if file was opened successfully, 0 if something wrong occurred.
 */
 int GRIFFIN_LOG_API_C grflog_init_file(const char* log_file_name);
 
 /**
  * Finish the initialized file. If it wasn't initialized before, just pass.
 */
-int GRIFFIN_LOG_API_C grflog_finish_file(void);
+void GRIFFIN_LOG_API_C grflog_finish_file(void);
 
 
 #ifdef __cplusplus

@@ -149,12 +149,11 @@ void grflog_log_file(log_event l_ev)
         fprintf(log_file, "[%s] [%s] %s\n", l_ev.datetime, l_ev.log_lvl_str, l_ev.content);
 }
 
-int grflog_finish_file(void)
+void grflog_finish_file(void)
 {
     grflog_info("Log Finished");
     if (log_file)
         fclose(log_file);
-    return (log_file == NULL);
 }
 
 
@@ -181,7 +180,7 @@ void grflog_log_console(log_event l_ev)
 }
 
 
-// Main log functions
+// Main log function
 void grflog_log(uint32_t log_lvl, const char* log_fmt, ...)
 {
     const size_t log_size = strlen(log_fmt) + 256;
