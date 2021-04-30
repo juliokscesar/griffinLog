@@ -24,29 +24,10 @@
 
 #include "griffinLog.h"
 
-#define ASSERT_LOG_INIT_WRITING() if(!log_file) grflog_error_callback(1)
-#define ASSERT_LOG_INIT_FINISHING() if (!log_file) grflog_error_callback(-1)
-
-void GRIFFIN_LOG_API_C grflog_error_callback(int err)
-{
-    switch (err)
-    {
-        case -1:
-            fprintf(stderr, "griffinLog Error Callback code -1: Trying to finish not initiated log\n");
-            break;
-
-        case 1:
-            fprintf(stderr, "griffinLog Error Callback code 1: Trying to write to not initiated log\n");
-            break;
-    }
-
-    exit(EXIT_FAILURE);
-}
-
 #if defined(GRIFFIN_LOG_WIN32)
 #include <Windows.h>
 
-void GRIFFIN_LOG_API_C SetConsoleColor(WORD* Attributes, DWORD Color)
+void SetConsoleColor(WORD* Attributes, DWORD Color)
 {
     CONSOLE_SCREEN_BUFFER_INFO Info;
     HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -55,7 +36,7 @@ void GRIFFIN_LOG_API_C SetConsoleColor(WORD* Attributes, DWORD Color)
     SetConsoleTextAttribute(hStdout, Color);
 }
 
-void GRIFFIN_LOG_API_C ResetConsoleColor(WORD Attributes)
+void ResetConsoleColor(WORD Attributes)
 {
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), Attributes);
 }
@@ -66,60 +47,122 @@ void GRIFFIN_LOG_API_C ResetConsoleColor(WORD Attributes)
 
 #endif // GRIFFIN_LOG_WIN32
 
-void GRIFFIN_LOG_API_C create_log_dir(void)
+// Utility functions
+
+/**
+ * Creates a directory if it doesn't exist
+ * @param path Path to create the directory.
+ */
+void make_directory(const char* path)
 {
     #if defined(GRIFFIN_LOG_WIN32)
-    CreateDirectoryA("logs", NULL);
+    CreateDirectoryA(path, NULL);
     #else
-    mkdir("./logs", S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+    mkdir(path, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
     #endif // GRIFFIN_LOG_WIN32
 }
 
-char* GRIFFIN_LOG_API_C get_current_datetime(void)
+/**
+ * Get the current date and time formatted as yyyy-mm-dd H:M:S.
+ * @param dest string destination to have the date and time. MINMUM SIZE: 20 bytes.
+ */
+void get_current_datetime(char* dest)
 {
     time_t t = time(0);
     struct tm *now = localtime(&t);
 
-    char* datetime = calloc(20, sizeof(char));
-    strftime(datetime, 20, "%Y-%m-%d %H:%M:%S", now);
-
-    return datetime;
+    strftime(dest, 20, "%Y-%m-%d %H:%M:%S", now);
 }
 
-const char* get_loglvl_str(uint32_t lvl)
+
+// Visual functions (levels as strings and their colors)
+
+/**
+ * Get the string that corresponds to the log level lvl.
+ * @param lvl Log level enumerated in enum log_level.
+ */
+const char* get_log_lvl_str(uint32_t lvl)
 {
     static const char* levels[] = { "INFO", "DEBUG", "WARN", "CRITICAL", "FATAL" };
     return levels[lvl];
 }
 
-const GRIFFIN_COLOR get_loglvl_color(uint32_t lvl)
+/**
+ * Get the color that corresponds to the log level lvl. The color is only used on console logging.
+ * @param lvl Log level enumerated in enum log_level.
+ */
+const GRIFFIN_COLOR get_log_lvl_color(uint32_t lvl)
 {
     static const GRIFFIN_COLOR level_colors[] = { GRIFFIN_COLOR_BLUE, GRIFFIN_COLOR_GREEN, GRIFFIN_COLOR_YELLOW, GRIFFIN_COLOR_RED, GRIFFIN_COLOR_BLACK_RED };
     return level_colors[lvl];
 }
 
+// TODO: Implement log_event struct to contain everything
+
+typedef struct
+{
+    uint32_t lvl;
+
+    const char* datetime;
+
+    const char* log_lvl_str;
+    const char* log_lvl_color;
+
+    const char* content;
+} log_event;
+
+const log_event construct_log_event(uint32_t log_lvl, const char* dt, const char* what)
+{
+    log_event l_ev = {
+        .lvl = log_lvl,
+        .datetime = dt,
+        .log_lvl_str = get_log_lvl_str(log_lvl),
+        .log_lvl_color = get_log_lvl_color(log_lvl),
+        .content = what
+    };
+
+    return l_ev;
+}
+
+// File logging functions
 static FILE* log_file;
-int GRIFFIN_LOG_API_C grflog_init(const char* log_file_name)
+int grflog_init_file(const char* log_file_name)
 {
     if (!log_file)
     {
-        create_log_dir();
+        char log_path[256];
+        sprintf(log_path, "./logs/");
 
-        char log_file_path[256] = "logs/";
-        strncat(log_file_path, log_file_name, sizeof(log_file_path) - strlen(log_file_name));
+        make_directory(log_path);
 
-        log_file = fopen(log_file_path, "w");
+        strncat(log_path, log_file_name, sizeof(log_path) - strlen(log_file_name));
+
+        log_file = fopen(log_path, "w");
     }
 
     grflog_info("Log Intiated");
     return !(log_file == NULL);
 }
 
-void GRIFFIN_LOG_API_C grflog_write_level_console(uint32_t log_lvl, const char* log, const char* datetime)
+void grflog_log_file(log_event l_ev)
 {
-    const char* lvl_str = get_loglvl_str(log_lvl);
-    const GRIFFIN_COLOR lvl_color = get_loglvl_color(log_lvl);
+    if (log_file)
+        fprintf(log_file, "[%s] [%s] %s\n", l_ev.datetime, l_ev.log_lvl_str, l_ev.content);
+}
 
+int grflog_finish_file(void)
+{
+    grflog_info("Log Finished");
+    if (log_file)
+        fclose(log_file);
+    return (log_file == NULL);
+}
+
+
+// Console logging function
+
+void grflog_log_console(log_event l_ev)
+{
     #if defined(GRIFFIN_LOG_WIN32)
 
     printf("[%s] [", datetime);
@@ -133,42 +176,28 @@ void GRIFFIN_LOG_API_C grflog_write_level_console(uint32_t log_lvl, const char* 
 
     #elif defined(GRIFFIN_LOG_LINUX)
 
-    printf("[%s] [%s%s%s] %s\n", datetime, lvl_color, lvl_str, GRIFFIN_COLOR_RESET, log);
+    printf("[%s] [%s%s%s] %s\n", l_ev.datetime, l_ev.log_lvl_color, l_ev.log_lvl_str, GRIFFIN_COLOR_RESET, l_ev.content);
 
     #endif // GRIFFIN_LOG_WIN32
 }
 
-void GRIFFIN_LOG_API_C grflog_write_level_file(uint32_t log_lvl, const char* log, const char* datetime)
-{
-    fprintf(log_file, "[%s] [%s] %s\n", datetime, get_loglvl_str(log_lvl), log);
-}
 
-void GRIFFIN_LOG_API_C grflog_write_level(uint32_t log_lvl, const char* log_fmt, ...)
+// Main log functions
+void grflog_log(uint32_t log_lvl, const char* log_fmt, ...)
 {
-    ASSERT_LOG_INIT_WRITING();
-
     const size_t log_size = strlen(log_fmt) + 256;
-    char* log = malloc(sizeof(char) * log_size);
+    char log[log_size];
 
     va_list vaArgs;
     va_start(vaArgs, log_fmt);
     vsnprintf(log, log_size - 1, log_fmt, vaArgs);
     va_end(vaArgs);
 
-    char* datetime = get_current_datetime();
+    char datetime[20];
+    get_current_datetime(datetime);
 
-    grflog_write_level_console(log_lvl, log, datetime);
-    grflog_write_level_file(log_lvl, log, datetime);
+    log_event l_ev = construct_log_event(log_lvl, datetime, log);
 
-    free(datetime);
-    free(log);
-}
-
-int GRIFFIN_LOG_API_C grflog_finish(void)
-{
-    ASSERT_LOG_INIT_FINISHING();
-
-    grflog_info("Log Finished");
-    fclose(log_file);
-    return (log_file == NULL);
+    grflog_log_console(l_ev);
+    grflog_log_file(l_ev);
 }

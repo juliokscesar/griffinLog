@@ -87,11 +87,11 @@ extern "C" {
 #include <stdint.h>
 #include <time.h>
 
-#define grflog_info(...) grflog_write_level(INFO, __VA_ARGS__)
-#define grflog_debug(...) grflog_write_level(DEBUG, __VA_ARGS__)
-#define grflog_warn(...) grflog_write_level(WARN, __VA_ARGS__)
-#define grflog_critical(...) grflog_write_level(CRITICAL, __VA_ARGS__)
-#define grflog_fatal(...) grflog_write_level(FATAL, __VA_ARGS__)
+#define grflog_info(...) grflog_log(INFO, __VA_ARGS__)
+#define grflog_debug(...) grflog_log(DEBUG, __VA_ARGS__)
+#define grflog_warn(...) grflog_log(WARN, __VA_ARGS__)
+#define grflog_critical(...) grflog_log(CRITICAL, __VA_ARGS__)
+#define grflog_fatal(...) grflog_log(FATAL, __VA_ARGS__)
 
 enum LogLevel
 {
@@ -102,11 +102,24 @@ enum LogLevel
     FATAL    = 4
 };
 
-int GRIFFIN_LOG_API_C grflog_init(const char* log_file_name);
+/**
+ * Main logging function. Macros with log level on their name expand to this function.
+ * @param log_level The log level of this event (see enum LogLevel)
+ * @param log_fmt The log message format (with printf-like placeholders)
+*/
+void GRIFFIN_LOG_API_C grflog_log(uint32_t log_level, const char* log_fmt, ...);
 
-void GRIFFIN_LOG_API_C grflog_write_level(uint32_t log_level, const char* log_fmt, ...);
+/**
+ * Initialize file logging and output to log_file_name file.
+ * @param log_file_name The file's name.
+*/
+int GRIFFIN_LOG_API_C grflog_init_file(const char* log_file_name);
 
-int GRIFFIN_LOG_API_C grflog_finish(void);
+/**
+ * Finish the initialized file. If it wasn't initialized before, just pass.
+*/
+int GRIFFIN_LOG_API_C grflog_finish_file(void);
+
 
 #ifdef __cplusplus
 }

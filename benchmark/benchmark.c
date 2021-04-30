@@ -46,15 +46,19 @@ gcc -o benchmark benchmark.c ../jkscLog.c
 double get_time()
 {
     #ifdef _WIN32
+
     LARGE_INTEGER t, f;
     QueryPerformanceCounter(&t);
     QueryPerformanceFrequency(&f);
     return (double)t.QuadPart/(double)f.QuadPart;
+
     #else
+
     struct timeval t;
     struct timezone tzp;
     gettimeofday(&t, &tzp);
     return t.tv_sec + t.tv_usec*1e-6;
+
     #endif // _WIN32
 }
 
@@ -62,15 +66,15 @@ int main()
 {
     double start = get_time();
 
-    grflog_init("benchmarking_log_C.log");
-    
+    grflog_init_file("benchmark_log.log");
+
     grflog_info("Writing INFO to log");
     grflog_debug("Writing %s logging", "debug");
     grflog_warn("Warning! Log warn benchmarking test");
     grflog_critical("Testing critical log %s", "on benchmark.c");
     grflog_fatal("Writing fatal %s to log benchmarking", "message");
 
-    grflog_finish();
+    grflog_finish_file();
 
     double end = get_time();
 
