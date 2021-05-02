@@ -95,7 +95,7 @@ extern "C" {
 #define grflog_critical(...) grflog_log(CRITICAL, __VA_ARGS__)
 #define grflog_fatal(...) grflog_log(FATAL, __VA_ARGS__)
 
-enum LogLevel
+enum log_level
 {
     INFO     = 0,
     DEBUG    = 1,
@@ -106,7 +106,7 @@ enum LogLevel
 
 /**
  * Main logging function. Macros with log level on their name expand to this function.
- * @param log_level The log level of this event (see enum LogLevel)
+ * @param log_level The log level of this event (see enum log_level)
  * @param log_fmt The log message format (with printf-like placeholders)
 */
 void GRIFFIN_LOG_API_C grflog_log(uint32_t log_level, const char* log_fmt, ...) GRIFFIN_LOG_FMT_FUNC;
@@ -119,7 +119,7 @@ void GRIFFIN_LOG_API_C grflog_log(uint32_t log_level, const char* log_fmt, ...) 
 int GRIFFIN_LOG_API_C grflog_init_file(const char* log_file_name);
 
 /**
- * Finish the initialized file. If it wasn't initialized before, just pass.
+ * Finish the initialized file. If it wasn't initialized, just pass.
 */
 void GRIFFIN_LOG_API_C grflog_finish_file(void);
 

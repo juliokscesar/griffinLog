@@ -143,10 +143,10 @@ int grflog_init_file(const char* log_file_name)
     return !(log_file == NULL);
 }
 
-void grflog_log_file(log_event l_ev)
+void grflog_log_file(log_event* l_ev)
 {
     if (log_file)
-        fprintf(log_file, "[%s] [%s] %s\n", l_ev.datetime, l_ev.log_lvl_str, l_ev.content);
+        fprintf(log_file, "[%s] [%s] %s\n", l_ev->datetime, l_ev->log_lvl_str, l_ev->content);
 }
 
 void grflog_finish_file(void)
@@ -159,22 +159,22 @@ void grflog_finish_file(void)
 
 // Console logging function
 
-void grflog_log_console(log_event l_ev)
+void grflog_log_console(log_event* l_ev)
 {
     #if defined(GRIFFIN_LOG_WIN32)
 
-    printf("[%s] [", datetime);
+    printf("[%s] [", l_ev->datetime);
 
     WORD attributes;
-    SetConsoleColor(&attributes, lvl_color);
-    printf("%s", lvl_str);
+    SetConsoleColor(&attributes, l_ev->log_lvl_color);
+    printf("%s", l_ev->log_lvl_str);
     ResetConsoleColor(attributes);
 
-    printf("] %s\n", log);
+    printf("] %s\n", l_ev->content);
 
     #elif defined(GRIFFIN_LOG_LINUX)
 
-    printf("[%s] [%s%s%s] %s\n", l_ev.datetime, l_ev.log_lvl_color, l_ev.log_lvl_str, GRIFFIN_COLOR_RESET, l_ev.content);
+    printf("[%s] [%s%s%s] %s\n", l_ev->datetime, l_ev->log_lvl_color, l_ev->log_lvl_str, GRIFFIN_COLOR_RESET, l_ev->content);
 
     #endif // GRIFFIN_LOG_WIN32
 }
@@ -196,6 +196,6 @@ void grflog_log(uint32_t log_lvl, const char* log_fmt, ...)
 
     log_event l_ev = construct_log_event(log_lvl, datetime, log);
 
-    grflog_log_console(l_ev);
-    grflog_log_file(l_ev);
+    grflog_log_console(&l_ev);
+    grflog_log_file(&l_ev);
 }
