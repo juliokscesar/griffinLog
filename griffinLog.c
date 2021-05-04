@@ -102,7 +102,7 @@ typedef struct
 {
     uint32_t lvl;
 
-    const char* datetime;
+    char datetime[20];
 
     const char* log_lvl_str;
     const char* log_lvl_color;
@@ -110,15 +110,16 @@ typedef struct
     const char* content;
 } log_event;
 
-const log_event construct_log_event(uint32_t log_lvl, const char* dt, const char* what)
+const log_event construct_log_event(uint32_t log_lvl, const char* what)
 {
     log_event l_ev = {
         .lvl = log_lvl,
-        .datetime = dt,
         .log_lvl_str = get_log_lvl_str(log_lvl),
         .log_lvl_color = get_log_lvl_color(log_lvl),
         .content = what
     };
+
+    get_current_datetime(l_ev.datetime);
 
     return l_ev;
 }
@@ -191,10 +192,7 @@ void grflog_log(uint32_t log_lvl, const char* log_fmt, ...)
     vsnprintf(log, log_size - 1, log_fmt, vaArgs);
     va_end(vaArgs);
 
-    char datetime[20];
-    get_current_datetime(datetime);
-
-    log_event l_ev = construct_log_event(log_lvl, datetime, log);
+    log_event l_ev = construct_log_event(log_lvl, log);
 
     grflog_log_console(&l_ev);
     grflog_log_file(&l_ev);
