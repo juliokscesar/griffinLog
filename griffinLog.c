@@ -63,10 +63,10 @@ void make_directory(const char* path)
 }
 
 /**
- * Get the current date and time formatted as yyyy-mm-dd H:M:S.
+ * Print the current date and time formatted as yyyy-mm-dd H:M:S to the string dest.
  * @param dest string destination to have the date and time. MINMUM SIZE: 20 bytes.
  */
-void get_current_datetime(char* dest)
+void strdatetime(char* dest)
 {
     time_t t = time(0);
     struct tm *now = localtime(&t);
@@ -119,7 +119,7 @@ const log_event construct_log_event(uint32_t log_lvl, const char* what)
         .content = what
     };
 
-    get_current_datetime(l_ev.datetime);
+    strdatetime(l_ev.datetime);
 
     return l_ev;
 }
