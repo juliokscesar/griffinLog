@@ -98,7 +98,7 @@ const GRIFFIN_COLOR get_log_lvl_color(uint32_t lvl)
 }
 
 
-typedef struct
+struct log_event
 {
     uint32_t lvl;
 
@@ -108,20 +108,15 @@ typedef struct
     const char* log_lvl_color;
 
     const char* content;
-} log_event;
+};
 
-const log_event construct_log_event(uint32_t log_lvl, const char* what)
+void construct_log_event(struct log_event* l_ev, uint32_t log_lvl, const char* what)
 {
-    log_event l_ev = {
-        .lvl = log_lvl,
-        .log_lvl_str = get_log_lvl_str(log_lvl),
-        .log_lvl_color = get_log_lvl_color(log_lvl),
-        .content = what
-    };
-
-    strdatetime(l_ev.datetime);
-
-    return l_ev;
+    l_ev->lvl = log_lvl;
+    strdatetime(l_ev->datetime);
+    l_ev->log_lvl_str = get_log_lvl_str(log_lvl);
+    l_ev->log_lvl_color = get_log_lvl_color(log_lvl);
+    l_ev->content = what;
 }
 
 // File logging functions
@@ -140,11 +135,11 @@ int grflog_init_file(const char* log_file_name)
         log_file = fopen(log_path, "w");
     }
 
-    grflog_info("Log Intiated");
+    grflog_info("Log Initialized");
     return !(log_file == NULL);
 }
 
-void grflog_log_file(log_event* l_ev)
+void grflog_log_file(struct log_event* l_ev)
 {
     if (log_file)
         fprintf(log_file, "[%s] [%s] %s\n", l_ev->datetime, l_ev->log_lvl_str, l_ev->content);
@@ -160,7 +155,7 @@ void grflog_finish_file(void)
 
 // Console logging function
 
-void grflog_log_console(log_event* l_ev)
+void grflog_log_console(struct log_event* l_ev)
 {
     #if defined(GRIFFIN_LOG_WIN32)
 
@@ -192,7 +187,8 @@ void grflog_log(uint32_t log_lvl, const char* log_fmt, ...)
     vsnprintf(log, log_size - 1, log_fmt, vaArgs);
     va_end(vaArgs);
 
-    log_event l_ev = construct_log_event(log_lvl, log);
+    struct log_event l_ev;
+    construct_log_event(&l_ev, log_lvl, log);
 
     grflog_log_console(&l_ev);
     grflog_log_file(&l_ev);
