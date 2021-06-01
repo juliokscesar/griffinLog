@@ -50,12 +50,6 @@
     #define GRIFFIN_LOG_FMT_FUNC
 #endif // __GNUC__ || __GNUG__ || __clang__
 
-/* MUST DEFINE _CRT_SECURE_NO_WARNINGS ON MSVC (VISUAL STUDIO) */
-#ifdef _MSC_VER
-    #ifndef _CRT_SECURE_NO_WARNINGS
-        #error _CRT_SECURE_NO_WARNINGS not defined
-    #endif // !_CRT_SECURE_NO_WARNINGS
-#endif // _MSC_VER
 
 /* PLATFORM SPECIFIC CONSOLE COLOR DEFINITION */
 #if defined(GRIFFIN_LOG_WIN32)

@@ -64,14 +64,25 @@ void make_directory(const char* path)
 
 /**
  * Print the current date and time formatted as yyyy-mm-dd H:M:S to the string dest.
- * @param dest string destination to have the date and time. MINMUM SIZE: 20 bytes.
+ * @param dest string destination to have the date and time. MINMUM SIZE: 21 bytes.
  */
 void strdatetime(char* dest)
 {
     time_t t = time(0);
-    struct tm *now = localtime(&t);
+    struct tm now;
 
-    strftime(dest, 20, "%Y-%m-%d %H:%M:%S", now);
+    #if defined(GRIFFIN_LOG_WIN32) && defined(_MSC_VER)
+    if (localtime_s(&now, &t) != 0)
+    {
+        perror("Error when getting time: ");
+        *dest = '\0';
+        return;
+    }
+    #else
+    now = *(localtime(&t));
+    #endif // GRIFFIN_LOG_WIN32 && _MSC_VER
+
+    strftime(dest, 20, "%Y-%m-%d %H:%M:%S", &now);
 }
 
 
@@ -101,12 +112,8 @@ const GRIFFIN_COLOR get_log_lvl_color(uint32_t lvl)
 struct log_event
 {
     uint32_t lvl;
-
-    char datetime[20];
-
+    char datetime[21];
     const char* log_lvl_str;
-    const char* log_lvl_color;
-
     const char* content;
 };
 
@@ -115,7 +122,6 @@ void construct_log_event(struct log_event* l_ev, uint32_t log_lvl, const char* w
     l_ev->lvl = log_lvl;
     strdatetime(l_ev->datetime);
     l_ev->log_lvl_str = get_log_lvl_str(log_lvl);
-    l_ev->log_lvl_color = get_log_lvl_color(log_lvl);
     l_ev->content = what;
 }
 
@@ -126,7 +132,7 @@ int grflog_init_file(const char* log_file_name)
     if (!log_file)
     {
         char log_path[256];
-        sprintf(log_path, "./logs/");
+        strcpy(log_path, "./logs/");
 
         make_directory(log_path);
 
@@ -135,7 +141,7 @@ int grflog_init_file(const char* log_file_name)
         log_file = fopen(log_path, "w");
     }
 
-    grflog_info("Log Initialized");
+    grflog_info("File logging Initialized");
     return !(log_file == NULL);
 }
 
@@ -147,9 +153,12 @@ void grflog_log_file(struct log_event* l_ev)
 
 void grflog_finish_file(void)
 {
-    grflog_info("Log Finished");
+    grflog_info("File logging Finished");
     if (log_file)
+    {
+        fflush(log_file);
         fclose(log_file);
+    }
 }
 
 
@@ -157,12 +166,14 @@ void grflog_finish_file(void)
 
 void grflog_log_console(struct log_event* l_ev)
 {
+    const GRIFFIN_COLOR color = get_log_lvl_color(l_ev->lvl);
+
     #if defined(GRIFFIN_LOG_WIN32)
 
     printf("[%s] [", l_ev->datetime);
 
     WORD attributes;
-    SetConsoleColor(&attributes, l_ev->log_lvl_color);
+    SetConsoleColor(&attributes, color);
     printf("%s", l_ev->log_lvl_str);
     ResetConsoleColor(attributes);
 
@@ -170,7 +181,7 @@ void grflog_log_console(struct log_event* l_ev)
 
     #elif defined(GRIFFIN_LOG_LINUX)
 
-    printf("[%s] [%s%s%s] %s\n", l_ev->datetime, l_ev->log_lvl_color, l_ev->log_lvl_str, GRIFFIN_COLOR_RESET, l_ev->content);
+    printf("[%s] [%s%s%s] %s\n", l_ev->datetime, color, l_ev->log_lvl_str, GRIFFIN_COLOR_RESET, l_ev->content);
 
     #endif // GRIFFIN_LOG_WIN32
 }
