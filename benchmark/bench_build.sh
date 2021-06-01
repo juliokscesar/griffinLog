@@ -1,0 +1,1 @@
+gcc -o benchmark benchmark.c ../griffinLog.c

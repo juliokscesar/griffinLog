@@ -24,7 +24,7 @@
 
 /*
 Compile With:
-gcc -o benchmark benchmark.c ../jkscLog.c
+gcc -o benchmark benchmark.c ../griffinLog.c
 */
 
 #include <stdio.h>

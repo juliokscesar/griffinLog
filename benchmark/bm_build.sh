@@ -1,0 +1,1 @@
+gcc -o bm bm_million.c ../griffinLog.c
