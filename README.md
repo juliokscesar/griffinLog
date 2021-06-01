@@ -37,7 +37,7 @@ Clone the repository with `git clone https://github.com/juliokscesar/griffinLog.
     - Add the library path to your project and link the library.
 
 ## Example Code
-```
+```c
 #include "griffinLog.h"
 
 int main(void)
